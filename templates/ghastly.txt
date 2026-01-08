@@ -2,7 +2,7 @@
  
 ⏰ Date and Time: {time}
 
-## __Deathly Squad Raid__ 
+## __{guild_name} Raid__ 
 
 **Please Be In VC 30 Mins Before Raid - Please DM ME with any questions, comments, or concerns**
 

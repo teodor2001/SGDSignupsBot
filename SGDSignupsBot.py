@@ -101,7 +101,7 @@ async def host(interaction: discord.Interaction, guild: app_commands.Choice[str]
         
     discord_time = f"<t:{int(dt.timestamp())}:f>"
     
-    content_with_time = raw_content.replace("{time}", discord_time)
+    content_filled = raw_content.replace("{time}", discord_time).replace("{guild_name}", guild_info['name'])
 
     def replace_emoji_name(match):
         name = match.group(1)
@@ -109,12 +109,12 @@ async def host(interaction: discord.Interaction, guild: app_commands.Choice[str]
         if found:
             return str(found)
         return match.group(0)
-
-    final_content = re.sub(r':([a-zA-Z0-9_]+):', replace_emoji_name, content_with_time)
+    final_content = re.sub(r':([a-zA-Z0-9_]+):', replace_emoji_name, content_filled)
 
     reactions_to_add = []
     seen_emojis = set()
-    ignored_emojis = {'⏰', '👑'}
+    
+    ignored_emojis = {'⏰', '👑', '❄️', '🚨', '🔴', '🟢', '🔵', '🟣'}
 
     def add_reaction(emoji_obj):
         emoji_str = str(emoji_obj)
