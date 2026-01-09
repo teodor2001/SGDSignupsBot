@@ -196,15 +196,18 @@ async def templates_autocomplete(interaction: discord.Interaction, current: str)
 
 @host.autocomplete('time_string')
 async def time_autocomplete(interaction: discord.Interaction, current: str):
-    if not current or len(current) < 4:
+    if not current or len(current) < 6:
         return [] 
     
-    dt = dateparser.parse(current, languages=['en'])
-    if dt:
-        formatted = dt.strftime("%A, %b %d at %I:%M %p")
-        return [app_commands.Choice(name=f"Result: {formatted}", value=current)]
-    else:
-        return [app_commands.Choice(name="Keep typing...", value=current)]
+    try:
+        dt = dateparser.parse(current, languages=['en'])
+        if dt:
+            formatted = dt.strftime("%A, %b %d at %I:%M %p")
+            return [app_commands.Choice(name=f"Result: {formatted}", value=current)]
+    except Exception:
+        pass
+
+    return [app_commands.Choice(name="Keep typing...", value=current)]
 
 @bot.tree.command(name="get_emoji", description="Find the code for a server emoji and paste it into the TXT file to add it")
 @app_commands.describe(emoji_name="Start typing the emoji name")
