@@ -113,14 +113,28 @@ async def host(interaction: discord.Interaction, guild: app_commands.Choice[str]
 
     reactions_to_add = []
     seen_emojis = set()
-    
-    ignored_emojis = {'⏰', '👑', '❄️', '🚨', '🔴', '🟢', '🔵', '🟣'}
+    ignored_unicode = {'⏰', '👑', '❄️', '🚨', '🔴', '🟢', '🔵', '🟣'}
+    ignored_names = {
+        'Death', 'Storm', 'Fire', 'Ice', 'Balance', 'Life', 'Myth', 
+        'Redherring', 'Ghastly', 'Sun', 'Moon', 'Star', 'Shadow'
+    }
 
     def add_reaction(emoji_obj):
         emoji_str = str(emoji_obj)
-        if emoji_str not in seen_emojis and emoji_str not in ignored_emojis:
-            reactions_to_add.append(emoji_obj)
-            seen_emojis.add(emoji_str)
+        if emoji_str in seen_emojis:
+            return
+
+        if emoji_str in ignored_unicode:
+            return
+
+        if emoji_str.startswith('<'):
+            match = re.match(r'<a?:([a-zA-Z0-9_]+):[0-9]+>', emoji_str)
+            if match:
+                name = match.group(1)
+                if name in ignored_names:
+                    return
+        reactions_to_add.append(emoji_obj)
+        seen_emojis.add(emoji_str)
 
     custom_matches = re.finditer(r'<a?:([a-zA-Z0-9_]+):([0-9]+)>', final_content)
     unicode_matches = emoji.emoji_list(final_content)
