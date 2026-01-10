@@ -30,11 +30,6 @@ GUILD_CONFIG = {
         "color": 0x8b0000, 
         "filename": "deathly_squad_logo.png" 
     },
-    "stormy": {
-        "name": "Stormy Squad",
-        "color": 0x4B0082, 
-        "filename": "stormy_squad_logo.png"
-    },
     "shimmering": {
         "name": "Shimmering Gray Dragons",
         "color": 0xA9A9A9, 
@@ -78,7 +73,6 @@ bot = SGDBot()
 )
 @app_commands.choices(guild=[
     app_commands.Choice(name="Deathly Squad", value="deathly"),
-    app_commands.Choice(name="Stormy Squad", value="stormy"),
     app_commands.Choice(name="Shimmering Gray Dragons", value="shimmering")
 ])
 @app_commands.checks.has_permissions(administrator=True)
