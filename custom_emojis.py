@@ -24,3 +24,9 @@ form = PartialEmoji.from_str("<:Form_Role:1459655141488590878>")
 fyth = PartialEmoji.from_str("<:Fyth_Role:1459655164397883424>")
 Morm = PartialEmoji.from_str("<:Morm_Role:1459655184920744001>")
 Styth = PartialEmoji.from_str("<:Styth_Role:1459655210006745110>")
+
+#Numbers
+eleven = PartialEmoji.from_str("<:eleven:1459667831212871741>")
+twelve = PartialEmoji.from_str("<:twelve:1459667886262976564>")
+thirteen = PartialEmoji.from_str("<:thirteen:1459667973470945323>")
+fourteen = PartialEmoji.from_str("<:fourteen:1459668014633979924>")

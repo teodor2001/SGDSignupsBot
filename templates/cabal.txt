@@ -21,8 +21,8 @@
 
 🟣 **Team SE - Purple Banner**
 🔟 {custom_emojis.storm} Cabalist Hitter -
-:11: Poison Oak 2 -
-:12: West Cannon Shooter | Any School Hitter -
+{custom_emojis.eleven} Poison Oak 2 -
+{custom_emojis.twelve} West Cannon Shooter | Any School Hitter -
 
 ✅ I need a guild invite
 
