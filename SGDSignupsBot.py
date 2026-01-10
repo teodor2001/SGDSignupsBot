@@ -6,6 +6,7 @@ import os
 import dateparser
 import re
 import emoji
+import inspect
 import custom_emojis
 import warnings
 from dotenv import load_dotenv
@@ -107,58 +108,23 @@ async def host(interaction: discord.Interaction, guild: app_commands.Choice[str]
 
     def replace_emoji_name(match):
         name = match.group(1)
+        
+        if hasattr(custom_emojis, name):
+            return str(getattr(custom_emojis, name))
         found = discord.utils.get(interaction.guild.emojis, name=name)
         if found:
             return str(found)
+            
         return match.group(0)
+
     final_content = re.sub(r':([a-zA-Z0-9_]+):', replace_emoji_name, content_filled)
 
     reactions_to_add = []
-    seen_emojis = set()
-    ignored_unicode = {'⏰', '👑', '❄️', '🚨', '🔴', '🟢', '🔵', '🟣'}
-    ignored_names = {
-        'Death', 'Storm', 'Fire', 'Ice', 'Balance', 'Life', 'Myth', 
-        'Redherring', 'Ghastly', 'Sun', 'Moon', 'Star', 'Shadow'
-    }
+    ALL_POSSIBLE_REACTIONS = ['1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣', '7️⃣', '8️⃣', '9️⃣', '🔟',custom_emojis.eleven,custom_emojis.twelve,custom_emojis.thirteen,custom_emojis.fourteen,'✅']
 
-    def add_reaction(emoji_obj):
-        emoji_str = str(emoji_obj)
-        if emoji_str in seen_emojis:
-            return
-
-        if emoji_str in ignored_unicode:
-            return
-
-        if emoji_str.startswith('<'):
-            match = re.match(r'<a?:([a-zA-Z0-9_]+):[0-9]+>', emoji_str)
-            if match:
-                name = match.group(1)
-                if name in ignored_names:
-                    return
-        reactions_to_add.append(emoji_obj)
-        seen_emojis.add(emoji_str)
-
-    custom_matches = re.finditer(r'<a?:([a-zA-Z0-9_]+):([0-9]+)>', final_content)
-    unicode_matches = emoji.emoji_list(final_content)
-
-    all_matches = []
-    
-    for m in custom_matches:
-        all_matches.append({
-            'index': m.start(),
-            'emoji': m.group(0)
-        })
-        
-    for m in unicode_matches:
-        all_matches.append({
-            'index': m['match_start'],
-            'emoji': m['emoji']
-        })
-
-    all_matches.sort(key=lambda x: x['index'])
-
-    for match in all_matches:
-        add_reaction(match['emoji'])
+    for emoji_obj in ALL_POSSIBLE_REACTIONS:
+        if str(emoji_obj) in final_content:
+            reactions_to_add.append(emoji_obj)
 
     logo_filename = guild_info['filename']
     if not os.path.exists(logo_filename):

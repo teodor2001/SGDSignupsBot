@@ -22,8 +22,8 @@ storm = PartialEmoji.from_str("<:Storm_Role:1459656023232217204>")
 fife = PartialEmoji.from_str("<:Fife_Role:1459655115009949859>")
 form = PartialEmoji.from_str("<:Form_Role:1459655141488590878>")
 fyth = PartialEmoji.from_str("<:Fyth_Role:1459655164397883424>")
-Morm = PartialEmoji.from_str("<:Morm_Role:1459655184920744001>")
-Styth = PartialEmoji.from_str("<:Styth_Role:1459655210006745110>")
+morm = PartialEmoji.from_str("<:Morm_Role:1459655184920744001>")
+styth = PartialEmoji.from_str("<:Styth_Role:1459655210006745110>")
 
 #Numbers
 eleven = PartialEmoji.from_str("<:eleven:1459667831212871741>")
