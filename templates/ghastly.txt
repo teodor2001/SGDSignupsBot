@@ -1,4 +1,4 @@
-:Redherring: **GHASTLY CONSPIRACY RAID** :Ghastly:
+## :Redherring: **GHASTLY CONSPIRACY RAID** :Ghastly:
  
 ⏰ Date and Time: {time}
 
