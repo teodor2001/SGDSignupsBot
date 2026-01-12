@@ -9,7 +9,7 @@ Hunhau = PartialEmoji.from_str("<:Hunhau:1459655710966157374>")
 Nullity = PartialEmoji.from_str("<:Nullity:1459655817916842246>")
 
 #School Roles
-Spiral_Role = PartialEmoji.from_str("<:Spiral:1459655892269142271>")
+Spiral = PartialEmoji.from_str("<:Spiral:1459655892269142271>")
 Balance_Role = PartialEmoji.from_str("<:Balance_Role:1459656241902260417>")
 Death_Role = PartialEmoji.from_str("<:Death_Role:1459656210801233991>")
 Fire_Role = PartialEmoji.from_str("<:Fire_Role:1459656180027756706>")

@@ -2,6 +2,7 @@ import discord
 from discord import app_commands
 from discord.ext import commands
 from discord import PartialEmoji
+from discord import Guild
 import os
 import dateparser
 import re
@@ -105,13 +106,14 @@ async def host(interaction: discord.Interaction, guild: app_commands.Choice[str]
         
         if hasattr(custom_emojis, name):
             return str(getattr(custom_emojis, name))
+            print("Found an emoji?")
         found = discord.utils.get(interaction.guild.emojis, name=name)
         if found:
             return str(found)
             
         return match.group(0)
 
-    final_content = re.sub(r':([a-zA-Z0-9_]+):', replace_emoji_name, content_filled)
+    final_content = re.sub(r':(\w+):', replace_emoji_name, content_filled)
 
     reactions_to_add = []
     ALL_POSSIBLE_REACTIONS = ['1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣', '7️⃣', '8️⃣', '9️⃣', '🔟',custom_emojis.eleven,custom_emojis.twelve,custom_emojis.thirteen,custom_emojis.fourteen,'✅']
@@ -144,6 +146,8 @@ async def host(interaction: discord.Interaction, guild: app_commands.Choice[str]
             await msg.add_reaction(reaction)
         except Exception:
             pass
+
+    #await create_scheduled_event(f"{template_name.capitalize()} Raid", f"This is a {template_name.capitalize()} raid", discord_time, "general")
 
 @host.autocomplete('template_name')
 async def templates_autocomplete(interaction: discord.Interaction, current: str):
