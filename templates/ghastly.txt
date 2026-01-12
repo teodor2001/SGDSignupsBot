@@ -1,4 +1,4 @@
-{custom_emojis.herring} GHASTLY CONSPIRACY RAID {custom_emojis.ghastly}
+:Redherring: GHASTLY CONSPIRACY RAID :Ghastly:
  
 ⏰ Date and Time: {time}
 
@@ -7,7 +7,7 @@
 **Please Be In VC 30 Mins Before Raid - Please DM ME with any questions, comments, or concerns**
 
 __Left side:__
-1️⃣Death with Storm Weaving - {custom_emojis.herring} 
+1️⃣Death with Storm Weaving - :Redherring: 
 2️⃣Any School Left Side x3 - 
 
 __Right side: __

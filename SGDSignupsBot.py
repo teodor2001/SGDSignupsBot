@@ -43,8 +43,8 @@ class SGDBot(commands.Bot):
 
     async def setup_hook(self):
         if SERVER_ID:
-            self.tree.copy_global_to(guild=SERVER_ID)
-            await self.tree.sync(guild=SERVER_ID)
+            #await self.tree.copy_global_to(guild=SERVER_ID)
+            await self.tree.sync()
         
         self.tree.on_error = self.on_tree_error
 
