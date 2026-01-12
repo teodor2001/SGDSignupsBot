@@ -31,7 +31,8 @@ RAID_VC_MAPPING = {
     "ghastly": "GHASTLY_VC",
     "cabal":   "CABAL_VC",
     "void":    "VV_VC",
-    "cryingsky": "CSR_VC"
+    "cryingsky": "CSR_VC",
+    "poak": "CABAL_VC"
 }
 
 GUILD_CONFIG = {
@@ -43,12 +44,22 @@ GUILD_CONFIG = {
     },
     "shimmering": {
         "name": "Shimmering Gray Dragons",
-        "color": 0xA9A9A9, 
+        "color": 0xA9A9A9,
+        "filename": "shimmering_gray_dragons_logo.png",
         "event_banner": "banners/SGDBanner.png"
     }
 }
 
+RAID_TITLES = {
+    "ghastly": "Ghastly Conspiracy Raid",
+    "cabal": "Cabal's Revenge Raid",
+    "void": "Voracious Void Raid",
+    "cryingsky": "Crying Sky Raid",
+    "poak": "Poison Oak Side Boss Only Raid"
+}
+
 async def create_raid_event(interaction: discord.Interaction, guild_key: str, template_name: str, start_time, hoster: discord.Member):
+    custom_name = RAID_TITLES.get(template_name, f"{template_name.replace('_', ' ').title()}")
     try:
         env_var_name = RAID_VC_MAPPING[template_name.lower()]
         vc_id = int(os.getenv(env_var_name))
@@ -63,7 +74,7 @@ async def create_raid_event(interaction: discord.Interaction, guild_key: str, te
         description = f"Hosted by {hoster.display_name if hoster else display_host_name}. Sign up in the channel!"
         
         event = await interaction.guild.create_scheduled_event(
-            name=f"{template_name.replace('_', ' ').title()} Raid",
+            name=custom_name,
             description=description,
             start_time=start_time,
             end_time=start_time + timedelta(hours=3),
