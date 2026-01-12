@@ -4,6 +4,8 @@
 
 ## __{guild_name}__ 🚨
 
+{guild_role} {raider}
+
 Vanguard 
 1️⃣:Balance_Role: Jade
 2️⃣:Storm_Role: Storm 1

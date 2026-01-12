@@ -4,6 +4,8 @@
 
 ## __{guild_name}__ 🚨
 
+{guild_role} {raider}
+
 🔴 **Team NW - Red Banner**
 1️⃣ Cabalist Support -
 2️⃣ :Fire_Role: Oblongata Support (Myth Mastery) -
