@@ -1,4 +1,4 @@
-:Poisonoak: **POISON OAK ONLY RAID** :Poisonoak:
+## :Poisonoak: **POISON OAK ONLY RAID** :Poisonoak:
 
 ⏰ Date and Time: {time}
 
@@ -8,22 +8,22 @@
 
 **Please Be In VC 30 Mins Before Raid - Make a ticket with any questions, comments, or concerns**
 
-🔴 Team NW - Red Banner
+### :red_banner: Team NW - Red Banner
 1️⃣ Poison Oak Support 1
 2️⃣ Ice Tree Support
 3️⃣ Ice Tree Hitter
 
-🔵 Team SW - Blue Banner
+### :blue_banner: Team SW - Blue Banner
 4️⃣ Poison Oak Support 2
 5️⃣ Fire Tree Support 
 6️⃣ Fire Tree Hitter
 
-🟢 Team NE - Green Banner
+### :green_banner: Team NE - Green Banner
 7️⃣ Poison Oak Support 3
 8️⃣ Death Tree Support
 9️⃣ Death Tree Hitter
 
-🟣 Team SE - Purple Banner
+### :purple_banner: Team SE - Purple Banner
 🔟 Poison Oak Storm Hitter 
 :eleven: Life Tree Support 
 :twelve: Life Tree Hitter

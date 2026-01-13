@@ -32,3 +32,9 @@ eleven = PartialEmoji.from_str("<:eleven:1459667831212871741>")
 twelve = PartialEmoji.from_str("<:twelve:1459667886262976564>")
 thirteen = PartialEmoji.from_str("<:thirteen:1459667973470945323>")
 fourteen = PartialEmoji.from_str("<:fourteen:1459668014633979924>")
+
+#Banners
+blue_banner = PartialEmoji.from_str("<:blue_banner:1460516238458617906>")
+red_banner = PartialEmoji.from_str("<:red_banner:1460516333648351467>")
+green_banner = PartialEmoji.from_str("<:green_banner:1460516272574955601>")
+purple_banner = PartialEmoji.from_str("<:purple_banner:1460516302581141546>")
