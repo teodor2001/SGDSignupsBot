@@ -4,6 +4,7 @@
 
 ## __{guild_name}__ 🚨
 
+{guild_role} {raider}
 **Please Be In VC 30 Mins Before Raid - Please DM ME with any questions, comments, or concerns**
 
 🔴 **Team NW - Red Banner**

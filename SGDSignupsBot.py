@@ -40,13 +40,15 @@ GUILD_CONFIG = {
         "name": "Deathly Squad",
         "color": 0x8b0000, 
         "filename": "deathly_squad_logo.png",
-        "event_banner": "banners/DSBanner.png"
+        "event_banner": "banners/DSBanner.png",
+        "role_id": 1458719072245252137
     },
     "shimmering": {
         "name": "Shimmering Gray Dragons",
         "color": 0xA9A9A9,
         "filename": "shimmering_gray_dragons_logo.png",
-        "event_banner": "banners/SGDBanner.png"
+        "event_banner": "banners/SGDBanner.png",
+        "role_id": 1458718835195514910
     }
 }
 
@@ -57,6 +59,8 @@ RAID_TITLES = {
     "cryingsky": "Crying Sky Raid",
     "poak": "Poison Oak Side Boss Only Raid"
 }
+
+RAIDER_ROLE_ID = 1458979856938307750
 
 async def create_raid_event(interaction: discord.Interaction, guild_key: str, template_name: str, start_time, hoster: discord.Member):
     custom_name = RAID_TITLES.get(template_name, f"{template_name.replace('_', ' ').title()}")
@@ -144,13 +148,24 @@ async def host(interaction: discord.Interaction, guild: app_commands.Choice[str]
 
     dt = dateparser.parse(time_string, languages=['en'])
     
-    if not dt:
-        await interaction.response.send_message(f"I don't understand '{time_string}'. Try format '2026-01-09 19:00'.", ephemeral=True)
-        return
+    if dt.tzinfo is None:
+        dt = dt.astimezone()
         
     discord_time = f"<t:{int(dt.timestamp())}:f>"
     
     content_filled = raw_content.replace("{time}", discord_time).replace("{guild_name}", guild_info['name'])
+
+    PINGS = [] 
+    if "{guild_role}" in content_filled and "role_id" in guild_info:
+        r_id = guild_info['role_id']
+        mention = f"<@&{r_id}>"
+        content_filled = content_filled.replace("{guild_role}", mention)
+        PINGS.append(mention)
+
+    if "{raider}" in content_filled:
+        mention = f"<@&{RAIDER_ROLE_ID}>"
+        content_filled = content_filled.replace("{raider}", mention)
+        PINGS.append(mention)
 
     def replace_emoji_name(match):
         name = match.group(1)
@@ -190,6 +205,7 @@ async def host(interaction: discord.Interaction, guild: app_commands.Choice[str]
         embed.set_footer(text=f"Hosted by {guild_info['name']} | SGD Alliance", icon_url=f"attachment://{logo_filename}")
 
     await interaction.response.send_message("Raid posted!", ephemeral=True)
+    ping_content = " ".join(PINGS) if PINGS else None
     msg = await interaction.channel.send(file=logo_file, embed=embed)
     
     for reaction in reactions_to_add:
