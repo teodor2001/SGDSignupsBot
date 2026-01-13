@@ -5,6 +5,7 @@ Ghastly = PartialEmoji.from_str("<:Ghastly:1459655393536905338>")
 Redherring = PartialEmoji.from_str("<:Redherring:1459655468728193124>")
 Daemon = PartialEmoji.from_str("<:Daemon:1459655541184921896>")
 Divinecabalist = PartialEmoji.from_str("<:Divinecabalist:1459655632503439371>")
+Poisonoak = PartialEmoji.from_str("<:Poisonoak:1460392129041006816>")
 Hunhau = PartialEmoji.from_str("<:Hunhau:1459655710966157374>")
 Nullity = PartialEmoji.from_str("<:Nullity:1459655817916842246>")
 
@@ -23,6 +24,7 @@ Fife_Role = PartialEmoji.from_str("<:Fife_Role:1459655115009949859>")
 Form_Role = PartialEmoji.from_str("<:Form_Role:1459655141488590878>")
 Fyth_Role = PartialEmoji.from_str("<:Fyth_Role:1459655164397883424>")
 Morm_Role = PartialEmoji.from_str("<:Morm_Role:1459655184920744001>")
+Stire_Role = PartialEmoji.from_str("<:Stire_Role:1460389652975321375>")
 Styth_Role = PartialEmoji.from_str("<:Styth_Role:1459655210006745110>")
 
 #Numbers
