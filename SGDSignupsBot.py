@@ -39,14 +39,14 @@ GUILD_CONFIG = {
     "deathly": {
         "name": "Deathly Squad",
         "color": 0x8b0000, 
-        "filename": "deathly_squad_logo.png",
+        "filename": "logos/deathly_squad_logo.png",
         "event_banner": "banners/DSBanner.png",
         "role_id": 1458719072245252137
     },
     "shimmering": {
         "name": "Shimmering Gray Dragons",
         "color": 0xA9A9A9,
-        "filename": "shimmering_gray_dragons_logo.png",
+        "filename": "logos/shimmering_gray_dragons_logo.png",
         "event_banner": "banners/SGDBanner.png",
         "role_id": 1458718835195514910
     }
@@ -62,37 +62,6 @@ RAID_TITLES = {
 
 RAIDER_ROLE_ID = 1458979856938307750
 
-async def create_raid_event(interaction: discord.Interaction, guild_key: str, template_name: str, start_time, hoster: discord.Member):
-    custom_name = RAID_TITLES.get(template_name, f"{template_name.replace('_', ' ').title()}")
-    try:
-        env_var_name = RAID_VC_MAPPING[template_name.lower()]
-        vc_id = int(os.getenv(env_var_name))
-        voice_channel = interaction.guild.get_channel(vc_id)
-
-        banner_filename = GUILD_CONFIG[guild_key]['event_banner']
-        image_bytes = None
-        if os.path.exists(banner_filename):
-            with open(banner_filename, "rb") as f:
-                image_bytes = f.read()
-        display_host_name = GUILD_CONFIG[guild_key]['name']
-        description = f"Hosted by {hoster.display_name if hoster else display_host_name}. Sign up in the channel!"
-        
-        event = await interaction.guild.create_scheduled_event(
-            name=custom_name,
-            description=description,
-            start_time=start_time,
-            end_time=start_time + timedelta(hours=3),
-            channel=voice_channel,
-            entity_type=discord.EntityType.voice,
-            privacy_level=discord.PrivacyLevel.guild_only,
-            image=image_bytes
-        )
-        
-        await interaction.followup.send(f"✅ **Event Created!** [Link]({event.url})", ephemeral=True)
-
-    except Exception as e:
-        print(f"❌ Failed to create event: {e}")
-        await interaction.followup.send(f"⚠️ Event creation failed: {e}", ephemeral=True)
 class SGDBot(commands.Bot):
     def __init__(self):
         super().__init__(command_prefix="!", intents=discord.Intents.all())
@@ -119,6 +88,41 @@ class SGDBot(commands.Bot):
         print(f"⚠️ Unhandled Error: {error}")
 
 bot = SGDBot()
+
+async def create_raid_event(interaction: discord.Interaction, guild_key: str, template_name: str, start_time, hoster: discord.Member, signup: discord.Message):
+    custom_name = RAID_TITLES.get(template_name, f"{template_name.replace('_', ' ').title()}")
+    try:
+        env_var_name = RAID_VC_MAPPING[template_name.lower()]
+        vc_id = int(os.getenv(env_var_name))
+        voice_channel = interaction.guild.get_channel(vc_id)
+
+        banner_filename = GUILD_CONFIG[guild_key]['event_banner']
+        image_bytes = None
+        if os.path.exists(banner_filename):
+            with open(banner_filename, "rb") as f:
+                image_bytes = f.read()
+        if hoster:
+            display_host_name = hoster.display_name
+        else:
+            display_host_name = GUILD_CONFIG[guild_key]['name']
+        description = f"Hosted by {display_host_name}! Sign up in {signup.jump_url}"
+        
+        event = await interaction.guild.create_scheduled_event(
+            name=custom_name,
+            description=description,
+            start_time=start_time,
+            end_time=start_time + timedelta(hours=3),
+            channel=voice_channel,
+            entity_type=discord.EntityType.voice,
+            privacy_level=discord.PrivacyLevel.guild_only,
+            image=image_bytes
+        )
+        
+        await interaction.followup.send(f"✅ **Event Created!** [Link]({event.url})", ephemeral=True)
+
+    except Exception as e:
+        print(f"❌ Failed to create event: {e}")
+        await interaction.followup.send(f"⚠️ Event creation failed: {e}", ephemeral=True)
 
 @bot.tree.command(name="host", description="Post a raid from a text file")
 @app_commands.describe(
@@ -215,7 +219,7 @@ async def host(interaction: discord.Interaction, guild: app_commands.Choice[str]
             pass
 
     #await create_scheduled_event(f"{template_name.capitalize()} Raid", f"This is a {template_name.capitalize()} raid", discord_time, "general")
-    await create_raid_event(interaction, guild_key, template_name, dt, hoster)
+    await create_raid_event(interaction, guild_key, template_name, dt, hoster, msg)
 
 @host.autocomplete('template_name')
 async def templates_autocomplete(interaction: discord.Interaction, current: str):
