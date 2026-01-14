@@ -266,6 +266,13 @@ async def host(interaction: discord.Interaction, guild: app_commands.Choice[str]
 
     dt = dateparser.parse(time_string, languages=['en'])
     
+    if dt is None:
+        await interaction.response.send_message(
+            f"❌ Could not understand the time: `{time_string}`.", 
+            ephemeral=True
+        )
+        return
+    
     if dt.tzinfo is None:
         dt = dt.astimezone()
         
