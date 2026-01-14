@@ -105,7 +105,11 @@ async def create_raid_event(interaction: discord.Interaction, guild_key: str, te
             display_host_name = hoster.display_name
         else:
             display_host_name = GUILD_CONFIG[guild_key]['name']
-        description = f"Hosted by {display_host_name}! Sign up in {signup.jump_url}"
+
+        rules_for_raids = bot.get_channel(1458979356440268812)
+        rules = await rules_for_raids.fetch_message(1458979549294362736)
+        
+        description = f"Hosted by {display_host_name}! Sign up here: {signup.jump_url}\n\nRead the rules in {rules.jump_url} if you don't see raid channels!"
         
         event = await interaction.guild.create_scheduled_event(
             name=custom_name,
