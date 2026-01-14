@@ -10,16 +10,16 @@
 
 ### :red_banner: **Team NW - Red Banner**
 1️⃣ Cabalist Support -
-2️⃣ :Fire_Role: Oblongata Support (Myth Mastery) -
+2️⃣ Oblongata Support -
 3️⃣ West Cannon Puller | Any School Hitter -
 
 ### :green_banner: **Team NE - Green Banner**
 4️⃣ Daemon Support -
-5️⃣ :Fire_Role: Oblongata Hitter (Myth Mastery) -
+5️⃣ :Fire_Role: Oblongata Hitter -
 6️⃣ East Cannon Puller | Any School Hitter -
 
 ### :blue_banner: **Team SW - Blue Banner**
-7️⃣ :Fire_Role: Daemon Hitter -
+7️⃣ :Fyth_Role: Daemon Hitter -
 8️⃣ Poison Oak 1 -
 9️⃣ West Cannon Shooter | Any School Hitter -
 
