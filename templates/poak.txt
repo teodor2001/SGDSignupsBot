@@ -1,6 +1,7 @@
 ## :Poisonoak: **POISON OAK ONLY RAID** :Poisonoak:
 
 ⏰ Date and Time: {time}
+⌛ **Duration:** `{duration}`
 
 ## __{guild_name} Raid__ 🚨
 

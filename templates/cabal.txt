@@ -1,6 +1,7 @@
 ## :Daemon: **FULL CABAL RAID** :Divinecabalist:
 
 ⏰ **Date and Time:** {time}
+⌛ **Duration:** `{duration}`
 
 ## __{guild_name}__ 🚨
 

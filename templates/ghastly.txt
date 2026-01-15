@@ -1,6 +1,7 @@
 ## :Redherring: **GHASTLY CONSPIRACY RAID** :Ghastly:
  
 ⏰ Date and Time: {time}
+⌛ **Duration:** `{duration}`
 
 ## __{guild_name} Raid__ 🚨
 

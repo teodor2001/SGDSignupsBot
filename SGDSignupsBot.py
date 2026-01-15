@@ -197,8 +197,8 @@ class SGDBot(commands.Bot):
 
 bot = SGDBot()
 
-async def create_raid_event(interaction: discord.Interaction, guild_key: str, template_name: str, start_time, hoster: discord.Member, signup: discord.Message):
-    custom_name = RAID_TITLES.get(template_name, f"{template_name.replace('_', ' ').title()}")
+async def create_raid_event(interaction: discord.Interaction, guild_key: str, template_name: str, duration, start_time, hoster: discord.Member, signup: discord.Message):
+    custom_name = RAID_TITLES.get(template_name) + f" ({duration.name})"
     try:
         env_var_name = RAID_VC_MAPPING[template_name.lower()]
         vc_id = int(os.getenv(env_var_name))
@@ -223,7 +223,7 @@ async def create_raid_event(interaction: discord.Interaction, guild_key: str, te
             name=custom_name,
             description=description,
             start_time=start_time,
-            end_time=start_time + timedelta(hours=3),
+            end_time=start_time + timedelta(hours=duration.value),
             channel=voice_channel,
             entity_type=discord.EntityType.voice,
             privacy_level=discord.PrivacyLevel.guild_only,
@@ -241,16 +241,25 @@ async def create_raid_event(interaction: discord.Interaction, guild_key: str, te
 @bot.tree.command(name="host", description="Post a raid from a text file")
 @app_commands.describe(
     guild="Which guild is hosting?",
-    template_name="Select the raid template", 
+    template_name="Select the raid template",
+    duration="Duration of the raid in hours",
     time_string="Format: YYYY-MM-DD HH:MM (or just 7pm CET)",
     hoster="Optional: Tag the key donor (can be empty)"
 )
-@app_commands.choices(guild=[
-    app_commands.Choice(name="Deathly Squad", value="deathly"),
-    app_commands.Choice(name="Shimmering Gray Dragons", value="shimmering")
-])
+@app_commands.choices(
+    guild=[
+        app_commands.Choice(name="Deathly Squad", value="deathly"),
+        app_commands.Choice(name="Shimmering Gray Dragons", value="shimmering")
+    ]
+)
+@app_commands.choices(
+    duration=[
+        app_commands.Choice(name="1.5 Hours", value=1.5),
+        app_commands.Choice(name="3 Hours", value=3.0)
+    ]
+)
 @app_commands.checks.has_permissions(administrator=True)
-async def host(interaction: discord.Interaction, guild: app_commands.Choice[str], template_name: str, time_string: str, hoster: discord.Member = None):
+async def host(interaction: discord.Interaction, guild: app_commands.Choice[str], template_name: str, duration: app_commands.Choice[float], time_string: str, hoster: discord.Member = None):
     
     file_path = f"templates/{template_name}.txt"
     
@@ -278,7 +287,7 @@ async def host(interaction: discord.Interaction, guild: app_commands.Choice[str]
         
     discord_time = f"<t:{int(dt.timestamp())}:f>"
     
-    content_filled = raw_content.replace("{time}", discord_time).replace("{guild_name}", guild_info['name'])
+    content_filled = raw_content.replace("{time}", discord_time).replace("{duration}", duration.name).replace("{guild_name}", guild_info['name'])
 
     PINGS = [] 
     if "{guild_role}" in content_filled and "role_id" in guild_info:
@@ -298,10 +307,7 @@ async def host(interaction: discord.Interaction, guild: app_commands.Choice[str]
         if hasattr(custom_emojis, name):
             return str(getattr(custom_emojis, name))
             print("Found an emoji?")
-        found = discord.utils.get(interaction.guild.emojis, name=name)
-        if found:
-            return str(found)
-            
+
         return match.group(0)
 
     final_content = re.sub(r':(\w+):', replace_emoji_name, content_filled)
@@ -338,23 +344,18 @@ async def host(interaction: discord.Interaction, guild: app_commands.Choice[str]
             await msg.add_reaction(reaction)
         except Exception:
             pass
-
-    #await create_scheduled_event(f"{template_name.capitalize()} Raid", f"This is a {template_name.capitalize()} raid", discord_time, "general")
-    #await create_raid_event(interaction, guild_key, template_name, dt, hoster, msg)
-    discord_event = await create_raid_event(interaction, guild_key, template_name, dt, hoster, msg)
+    
+    discord_event = await create_raid_event(interaction, guild_key, template_name, duration, dt, hoster, msg)
     
     if discord_event:
-        cal_title = RAID_TITLES.get(template_name, template_name.replace('_', ' ').title())
-        cal_end = dt + timedelta(hours=3)
+        cal_title = discord_event.name
+        cal_end = dt + timedelta(hours=duration.value)
         cal_desc = f"Hosted by {hoster.display_name if hoster else guild_info['name']}\n\nSign up in Discord: {msg.jump_url}"
         google_id, google_link = add_to_google_calendar(cal_title, cal_desc, dt, cal_end, discord_event.id)
 
         if google_id:
-            confirm_msg = f"📅 **Added to Google Calendar!**\n📎 [Link to Event]({google_link})"
-            
-            if CALENDAR_PUBLIC_URL:
-                confirm_msg += f"\n🗓️ [View Full Calendar]({CALENDAR_PUBLIC_URL})"
-            
+            confirm_msg = f"\n🗓️ [View Full Calendar]({CALENDAR_PUBLIC_URL})"
+
             await interaction.channel.send(confirm_msg)
 
 @host.autocomplete('template_name')
