@@ -1,6 +1,7 @@
 from discord import PartialEmoji
 
 #Mobs
+Loremagus = PartialEmoji.from_str("<:Loremagus:1462230412528189460>")
 Ghastly = PartialEmoji.from_str("<:Ghastly:1459655393536905338>")
 Redherring = PartialEmoji.from_str("<:Redherring:1459655468728193124>")
 Daemon = PartialEmoji.from_str("<:Daemon:1459655541184921896>")
@@ -38,3 +39,6 @@ blue_banner = PartialEmoji.from_str("<:blue_banner:1460516238458617906>")
 red_banner = PartialEmoji.from_str("<:red_banner:1460516333648351467>")
 green_banner = PartialEmoji.from_str("<:green_banner:1460516272574955601>")
 purple_banner = PartialEmoji.from_str("<:purple_banner:1460516302581141546>")
+
+#Random
+GoldKey = PartialEmoji.from_str("<:GoldKey:1462230767231963230>")

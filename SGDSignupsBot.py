@@ -26,6 +26,7 @@ SERVER_ID_RAW = os.getenv('SERVER_ID')
 SERVICE_ACCOUNT_FILE = 'service_account.json'
 CALENDAR_ID = os.getenv('CALENDAR_ID')
 CALENDAR_PUBLIC_URL = os.getenv('CALENDAR_PUBLIC_URL')
+GOLD_KEY_VC_ID = os.getenv('GOLD_KEY_VC')
 RAIDER_ROLE_ID = 1458979856938307750
 
 
@@ -59,6 +60,13 @@ GUILD_CONFIG = {
         "filename": "logos/shimmering_gray_dragons_logo.png",
         "event_banner": "banners/SGDBanner.png",
         "role_id": 1458718835195514910
+    },
+    "golden": {
+        "name": "Golden Dragons X",
+        "color": 0xFFD700,
+        "filename": "logos/golden_dragons_x_logo.png",
+        "event_banner": "banners/GDXBanner.png",
+        "role_id": 0
     }
 }
 
@@ -69,6 +77,12 @@ RAID_TITLES = {
     "cryingsky": "Crying Sky Raid",
     "poak": "Poison Oak Side Boss Only Raid"
 }
+
+KEY_TITLES = {
+    "loremagus": "High Loremagus Gold Key",
+    "takanobu": "Takanobu The Masterless Gold Key"
+}
+
 
 TEMPLATE_CACHE = []
 LAST_CACHE_UPDATE = 0
@@ -155,9 +169,14 @@ class SGDBot(commands.Bot):
         super().__init__(command_prefix="!", intents=discord.Intents.all())
 
     async def setup_hook(self):
+        update_template_cache()
         if SERVER_ID:
             #await self.tree.copy_global_to(guild=SERVER_ID)
-            await self.tree.sync()
+            #await self.tree.sync()
+            self.tree.clear_commands(guild=SERVER_ID)
+            self.tree.copy_global_to(guild=SERVER_ID)
+            await self.tree.sync(guild=SERVER_ID)
+            print("Commands synced!")
         
         self.tree.on_error = self.on_tree_error
 
@@ -197,11 +216,33 @@ class SGDBot(commands.Bot):
 
 bot = SGDBot()
 
-async def create_raid_event(interaction: discord.Interaction, guild_key: str, template_name: str, duration, start_time, hoster: discord.Member, signup: discord.Message):
-    custom_name = RAID_TITLES.get(template_name) + f" ({duration.name})"
+def get_duration_name(duration_val: float):
+    if duration_val == 1.0:
+        return "1 Hour"
+    elif duration_val == 1.5:
+        return "1.5 Hours"
+    elif duration_val == 2.0:
+        return "2 Hours"
+    elif duration_val == 3.0:
+        return "3 Hours"
+
+async def create_raid_event(interaction: discord.Interaction, guild_key: str, template_name: str, duration, start_time, hoster: discord.Member, signup: discord.Message, event_type: str):
+    
+    if event_type == "key":
+        title_map = KEY_TITLES
+        vc_id_raw = GOLD_KEY_VC_ID
+    else:
+        title_map = RAID_TITLES
+        env_var_name = RAID_VC_MAPPING.get(template_name.lower(), "CABAL_VC")
+        vc_id_raw = os.getenv(env_var_name)
+
+    duration_str = get_duration_name(duration)
+    custom_name = title_map.get(template_name, template_name.title()) + f" ({duration_str})"
     try:
-        env_var_name = RAID_VC_MAPPING[template_name.lower()]
-        vc_id = int(os.getenv(env_var_name))
+        if not vc_id_raw:
+            raise ValueError(f"VC ID not found for template '{template_name}' (Type: {event_type})")
+        
+        vc_id = int(vc_id_raw)  
         voice_channel = interaction.guild.get_channel(vc_id)
 
         banner_filename = GUILD_CONFIG[guild_key]['event_banner']
@@ -223,7 +264,7 @@ async def create_raid_event(interaction: discord.Interaction, guild_key: str, te
             name=custom_name,
             description=description,
             start_time=start_time,
-            end_time=start_time + timedelta(hours=duration.value),
+            end_time=start_time + timedelta(hours=duration),
             channel=voice_channel,
             entity_type=discord.EntityType.voice,
             privacy_level=discord.PrivacyLevel.guild_only,
@@ -238,28 +279,39 @@ async def create_raid_event(interaction: discord.Interaction, guild_key: str, te
         await interaction.followup.send(f"⚠️ Event creation failed: {e}", ephemeral=True)
         return None
 
-@bot.tree.command(name="host", description="Post a raid from a text file")
+@bot.tree.command(name="host", description="Post a raid or gold key run from a text file")
 @app_commands.describe(
+    event_type="Is this a Raid or a Gold Key?",
     guild="Which guild is hosting?",
-    template_name="Select the raid template",
-    duration="Duration of the raid in hours",
+    template_name="Select the template",
+    duration="Duration in hours",
     time_string="Format: YYYY-MM-DD HH:MM (or just 7pm CET)",
     hoster="Optional: Tag the key donor (can be empty)"
 )
 @app_commands.choices(
+    event_type=[
+        app_commands.Choice(name="Raid", value="raid"),
+        app_commands.Choice(name="Gold Key", value="key")
+    ],
     guild=[
         app_commands.Choice(name="Deathly Squad", value="deathly"),
-        app_commands.Choice(name="Shimmering Gray Dragons", value="shimmering")
-    ]
-)
-@app_commands.choices(
-    duration=[
-        app_commands.Choice(name="1.5 Hours", value=1.5),
-        app_commands.Choice(name="3 Hours", value=3.0)
+        app_commands.Choice(name="Shimmering Gray Dragons", value="shimmering"),
+        app_commands.Choice(name="Golden Dragons X", value="golden")
     ]
 )
 @app_commands.checks.has_permissions(administrator=True)
-async def host(interaction: discord.Interaction, guild: app_commands.Choice[str], template_name: str, duration: app_commands.Choice[float], time_string: str, hoster: discord.Member = None):
+async def host(interaction: discord.Interaction, event_type: app_commands.Choice[str], guild: app_commands.Choice[str], template_name: str, duration: float, time_string: str, hoster: discord.Member = None):
+    
+    e_type = event_type.value
+    dur_val = duration
+
+    if e_type == "raid" and dur_val not in [1.5, 3.0]:
+        await interaction.response.send_message("❌ **Invalid Duration:** Raids must be **1.5** or **3** hours.", ephemeral=True)
+        return
+    
+    if e_type == "key" and dur_val not in [1.0, 2.0]:
+        await interaction.response.send_message("❌ **Invalid Duration:** Gold Keys must be **1** or **2** hours.", ephemeral=True)
+        return
     
     file_path = f"templates/{template_name}.txt"
     
@@ -286,8 +338,8 @@ async def host(interaction: discord.Interaction, guild: app_commands.Choice[str]
         dt = dt.astimezone()
         
     discord_time = f"<t:{int(dt.timestamp())}:f>"
-    
-    content_filled = raw_content.replace("{time}", discord_time).replace("{duration}", duration.name).replace("{guild_name}", guild_info['name'])
+    duration_str = get_duration_name(dur_val)
+    content_filled = raw_content.replace("{time}", discord_time).replace("{duration}", duration_str).replace("{guild_name}", guild_info['name'])
 
     PINGS = [] 
     if "{guild_role}" in content_filled and "role_id" in guild_info:
@@ -325,10 +377,11 @@ async def host(interaction: discord.Interaction, guild: app_commands.Choice[str]
          return
 
     logo_file = discord.File(logo_filename, filename=logo_filename)
-    
+
+    author_title = f"{guild_info['name']} {e_type.title()}"
     embed = discord.Embed(description=final_content, color=guild_info['color'])
     embed.set_thumbnail(url=f"attachment://{logo_filename}")
-    embed.set_author(name=f"{guild_info['name']} Raid", icon_url=f"attachment://{logo_filename}")
+    embed.set_author(name=author_title, icon_url=f"attachment://{logo_filename}")
     
     if hoster:
         embed.set_footer(text=f"Hosted by {hoster.display_name} | SGD Alliance", icon_url=hoster.display_avatar.url)
@@ -344,12 +397,12 @@ async def host(interaction: discord.Interaction, guild: app_commands.Choice[str]
             await msg.add_reaction(reaction)
         except Exception:
             pass
-    
-    discord_event = await create_raid_event(interaction, guild_key, template_name, duration, dt, hoster, msg)
+
+    discord_event = await create_raid_event(interaction, guild_key, template_name, dur_val, dt, hoster, msg, e_type)
     
     if discord_event:
         cal_title = discord_event.name
-        cal_end = dt + timedelta(hours=duration.value)
+        cal_end = dt + timedelta(hours=dur_val)
         cal_desc = f"Hosted by {hoster.display_name if hoster else guild_info['name']}\n\nSign up in Discord: {msg.jump_url}"
         google_id, google_link = add_to_google_calendar(cal_title, cal_desc, dt, cal_end, discord_event.id)
 
@@ -361,11 +414,38 @@ async def host(interaction: discord.Interaction, guild: app_commands.Choice[str]
 @host.autocomplete('template_name')
 async def templates_autocomplete(interaction: discord.Interaction, current: str):
     options = []
+    event_type = getattr(interaction.namespace, 'event_type', 'raid')
     all_templates = update_template_cache()
+
+    valid_keys = []
+    if event_type == "key":
+        valid_keys = KEY_TITLES.keys()
+    else:
+        valid_keys = RAID_TITLES.keys()
+    
     for name in all_templates:
         if current.lower() in name.lower():
             options.append(app_commands.Choice(name=name, value=name))
     return options[:25]
+
+@host.autocomplete('duration')
+async def duration_autocomplete(interaction: discord.Interaction, current: float):
+    event_type = getattr(interaction.namespace, 'event_type', 'raid')
+    
+    raid_choices = [
+        app_commands.Choice(name="1.5 Hours", value=1.5),
+        app_commands.Choice(name="3 Hours", value=3.0)
+    ]
+    
+    key_choices = [
+        app_commands.Choice(name="1 Hour", value=1.0),
+        app_commands.Choice(name="2 Hours", value=2.0)
+    ]
+
+    if event_type == 'key':
+        return key_choices
+    else:
+        return raid_choices
 
 @host.autocomplete('time_string')
 async def time_autocomplete(interaction: discord.Interaction, current: str):
