@@ -52,21 +52,24 @@ GUILD_CONFIG = {
         "color": 0x8b0000, 
         "filename": "logos/deathly_squad_logo.png",
         "event_banner": "banners/DSBanner.png",
-        "role_id": 1458719072245252137
+        "role_id": 1458719072245252137,
+        "events":"raid"
     },
     "shimmering": {
         "name": "Shimmering Gray Dragons",
         "color": 0xA9A9A9,
         "filename": "logos/shimmering_gray_dragons_logo.png",
         "event_banner": "banners/SGDBanner.png",
-        "role_id": 1458718835195514910
+        "role_id": 1458718835195514910,
+        "events":"raid"
     },
     "golden": {
         "name": "Golden Dragons X",
         "color": 0xFFD700,
         "filename": "logos/golden_dragons_x_logo.png",
         "event_banner": "banners/GDXBanner.png",
-        "role_id": 1458719163005665411
+        "role_id": 1458719163005665411,
+        "events":"key"
     }
 }
 
@@ -87,16 +90,17 @@ KEY_TITLES = {
 TEMPLATE_CACHE = []
 LAST_CACHE_UPDATE = 0
 
-def update_template_cache():
+def update_template_cache(event: str):
     global TEMPLATE_CACHE, LAST_CACHE_UPDATE
-    if time.time() - LAST_CACHE_UPDATE > 30:
-        options = []
-        if os.path.exists("templates"):
-            for filename in os.listdir("templates"):
-                if filename.endswith(".txt"):
-                    options.append(filename[:-4])
-        TEMPLATE_CACHE = options
-        LAST_CACHE_UPDATE = time.time()
+    folder = f"{event}_templates"
+    #if time.time() - LAST_CACHE_UPDATE > 30:
+    options = []
+    if os.path.exists(folder):
+        for filename in os.listdir(folder):
+            if filename.endswith(".txt"):
+                options.append(filename[:-4])
+    TEMPLATE_CACHE = options
+    LAST_CACHE_UPDATE = time.time()
     return TEMPLATE_CACHE
 
 def get_calendar_service():
@@ -169,13 +173,12 @@ class SGDBot(commands.Bot):
         super().__init__(command_prefix="!", intents=discord.Intents.all())
 
     async def setup_hook(self):
-        update_template_cache()
         if SERVER_ID:
             #await self.tree.copy_global_to(guild=SERVER_ID)
             #await self.tree.sync()
             self.tree.clear_commands(guild=SERVER_ID)
             self.tree.copy_global_to(guild=SERVER_ID)
-            await self.tree.sync(guild=SERVER_ID)
+            await self.tree.sync()
             print("Commands synced!")
         
         self.tree.on_error = self.on_tree_error
@@ -292,15 +295,10 @@ async def create_raid_event(interaction: discord.Interaction, guild_key: str, te
     event_type=[
         app_commands.Choice(name="Raid", value="raid"),
         app_commands.Choice(name="Gold Key", value="key")
-    ],
-    guild=[
-        app_commands.Choice(name="Deathly Squad", value="deathly"),
-        app_commands.Choice(name="Shimmering Gray Dragons", value="shimmering"),
-        app_commands.Choice(name="Golden Dragons X", value="golden")
     ]
 )
 @app_commands.checks.has_permissions(administrator=True)
-async def host(interaction: discord.Interaction, event_type: app_commands.Choice[str], guild: app_commands.Choice[str], template_name: str, duration: float, time_string: str, hoster: discord.Member = None):
+async def host(interaction: discord.Interaction, event_type: app_commands.Choice[str], guild: str, template_name: str, duration: float, time_string: str, hoster: discord.Member = None):
     
     e_type = event_type.value
     dur_val = duration
@@ -313,16 +311,16 @@ async def host(interaction: discord.Interaction, event_type: app_commands.Choice
         await interaction.response.send_message("❌ **Invalid Duration:** Gold Keys must be **1** or **2** hours.", ephemeral=True)
         return
     
-    file_path = f"templates/{template_name}.txt"
+    file_path = f"{e_type}_templates/{template_name}.txt"
     
     if not os.path.exists(file_path):
-        await interaction.response.send_message(f"Template `templates/{template_name}.txt` not found", ephemeral=True)
+        await interaction.response.send_message(f"Template `{e_type}_templates/{template_name}.txt` not found", ephemeral=True)
         return
 
     with open(file_path, "r", encoding="utf-8") as f:
         raw_content = f.read()
 
-    guild_key = guild.value
+    guild_key = guild
     guild_info = GUILD_CONFIG[guild_key]
 
     dt = dateparser.parse(time_string, languages=['en'])
@@ -411,41 +409,45 @@ async def host(interaction: discord.Interaction, event_type: app_commands.Choice
 
             await interaction.channel.send(confirm_msg)
 
+@host.autocomplete('guild')
+async def guild_autocomplete(interaction: discord.Interaction, current: str):
+    options = []
+    event_type = getattr(interaction.namespace, 'event_type')
+    print(event_type)
+
+    for guild in GUILD_CONFIG:
+        if current.lower() in guild.lower() and GUILD_CONFIG[guild]["events"] == event_type:
+            options.append(app_commands.Choice(name=GUILD_CONFIG[guild]["name"], value=guild))
+    return options[:25]
+    
 @host.autocomplete('template_name')
 async def templates_autocomplete(interaction: discord.Interaction, current: str):
     options = []
-    event_type = getattr(interaction.namespace, 'event_type', 'raid')
-    all_templates = update_template_cache()
+    event_type = getattr(interaction.namespace, 'event_type')
 
-    valid_keys = []
-    if event_type == "key":
-        valid_keys = KEY_TITLES.keys()
-    else:
-        valid_keys = RAID_TITLES.keys()
+    templates = update_template_cache(event_type)
     
-    for name in all_templates:
+    for name in templates:
         if current.lower() in name.lower():
-            options.append(app_commands.Choice(name=name, value=name))
+            options.append(app_commands.Choice(name=name.capitalize(), value=name))
     return options[:25]
 
 @host.autocomplete('duration')
 async def duration_autocomplete(interaction: discord.Interaction, current: float):
-    event_type = getattr(interaction.namespace, 'event_type', 'raid')
-    
-    raid_choices = [
-        app_commands.Choice(name="1.5 Hours", value=1.5),
-        app_commands.Choice(name="3 Hours", value=3.0)
-    ]
-    
-    key_choices = [
-        app_commands.Choice(name="1 Hour", value=1.0),
-        app_commands.Choice(name="2 Hours", value=2.0)
-    ]
+    event_type = getattr(interaction.namespace, 'event_type')
 
-    if event_type == 'key':
-        return key_choices
-    else:
+    if event_type == 'raid':
+        raid_choices = [
+            app_commands.Choice(name="1.5 Hours", value=1.5),
+            app_commands.Choice(name="3 Hours", value=3.0)
+        ]
         return raid_choices
+    else:
+        key_choices = [
+            app_commands.Choice(name="1 Hour", value=1.0),
+            app_commands.Choice(name="2 Hours", value=2.0)
+        ]
+        return key_choices
 
 @host.autocomplete('time_string')
 async def time_autocomplete(interaction: discord.Interaction, current: str):
