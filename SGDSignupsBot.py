@@ -66,7 +66,7 @@ GUILD_CONFIG = {
         "color": 0xFFD700,
         "filename": "logos/golden_dragons_x_logo.png",
         "event_banner": "banners/GDXBanner.png",
-        "role_id": 0
+        "role_id": 1458719163005665411
     }
 }
 
