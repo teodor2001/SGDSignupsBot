@@ -30,13 +30,14 @@ Myth_Role = PartialEmoji.from_str("<:Myth_Role:1459656056551772336>")
 Storm_Role = PartialEmoji.from_str("<:Storm_Role:1459656023232217204>")
 
 #Cosplay Roles
-Dorm_Role = PartialEmoji.from_str("<:Dorm_Role:1462537257880784896>")
+Dorm_Role = PartialEmoji.from_str("<:Dorm_Role:1462537373945430056>")
 Fife_Role = PartialEmoji.from_str("<:Fife_Role:1459655115009949859>")
 Form_Role = PartialEmoji.from_str("<:Form_Role:1459655141488590878>")
 Fyth_Role = PartialEmoji.from_str("<:Fyth_Role:1459655164397883424>")
 Morm_Role = PartialEmoji.from_str("<:Morm_Role:1459655184920744001>")
 Stire_Role = PartialEmoji.from_str("<:Stire_Role:1460389652975321375>")
 Styth_Role = PartialEmoji.from_str("<:Styth_Role:1459655210006745110>")
+Dorm_Role = PartialEmoji.from_str("<:Dorm_Role:1462537373945430056>")
 
 #Numbers
 eleven = PartialEmoji.from_str("<:eleven:1459667831212871741>")

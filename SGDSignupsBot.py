@@ -5,13 +5,7 @@ from discord import app_commands
 from discord.ext import commands
 from discord import PartialEmoji
 from discord import Guild
-import os
-import dateparser
-import re
-import emoji
-import inspect
-import custom_emojis
-import warnings
+import os, dateparser, re, emoji, inspect, custom_emojis, warnings, logging, math
 from dotenv import load_dotenv
 from datetime import timedelta
 from google.oauth2 import service_account
@@ -49,7 +43,8 @@ RAID_VC_MAPPING = {
 GUILD_CONFIG = {
     "deathly": {
         "name": "Deathly Squad",
-        "color": 0x8b0000, 
+        "color": 0x8b0000,
+        "googlecal_color": 11,
         "filename": "logos/deathly_squad_logo.png",
         "event_banner": "banners/DSBanner.png",
         "role_id": 1458719072245252137,
@@ -58,6 +53,7 @@ GUILD_CONFIG = {
     "shimmering": {
         "name": "Shimmering Gray Dragons",
         "color": 0xA9A9A9,
+        "googlecal_color": 8,
         "filename": "logos/shimmering_gray_dragons_logo.png",
         "event_banner": "banners/SGDBanner.png",
         "role_id": 1458718835195514910,
@@ -66,6 +62,7 @@ GUILD_CONFIG = {
     "golden": {
         "name": "Golden Dragons X",
         "color": 0xFFD700,
+        "googlecal_color": 5,
         "filename": "logos/golden_dragons_x_logo.png",
         "event_banner": "banners/GDXBanner.png",
         "role_id": 1458719163005665411,
@@ -95,22 +92,16 @@ KEY_TITLES = {
 
 }
 
-
-TEMPLATE_CACHE = []
-LAST_CACHE_UPDATE = 0
-
 def update_template_cache(event: str):
-    global TEMPLATE_CACHE, LAST_CACHE_UPDATE
     folder = f"{event}_templates"
     #if time.time() - LAST_CACHE_UPDATE > 30:
-    options = []
+    template_cache = []
     if os.path.exists(folder):
         for filename in os.listdir(folder):
             if filename.endswith(".txt"):
-                options.append(filename[:-4])
-    TEMPLATE_CACHE = options
-    LAST_CACHE_UPDATE = time.time()
-    return TEMPLATE_CACHE
+                template_cache.append(filename[:-4])
+    #LAST_CACHE_UPDATE = time.time()
+    return template_cache
 
 def get_calendar_service():
     creds = service_account.Credentials.from_service_account_file(
@@ -134,12 +125,13 @@ def get_google_event_by_discord_id(discord_id):
         print(f"⚠️ Failed to lookup Google ID: {e}")
         return None
 
-def add_to_google_calendar(title, description, start_dt, end_dt, discord_id):
+def add_to_google_calendar(title, description, start_dt, end_dt, discord_id, event_color):
     try:
         service = get_calendar_service()
         event = {
             'summary': title,
             'description': description,
+            'colorId': event_color,
             'start': {'dateTime': start_dt.isoformat()},
             'end': {'dateTime': end_dt.isoformat()},    
             'extendedProperties': {
@@ -147,6 +139,7 @@ def add_to_google_calendar(title, description, start_dt, end_dt, discord_id):
             }
         }
         event_result = service.events().insert(calendarId=CALENDAR_ID, body=event).execute()
+        print (event_result)
         return event_result['id'], event_result['htmlLink']
     except Exception as e:
         print(f"❌ Google Calendar Error: {e}")
@@ -228,17 +221,7 @@ class SGDBot(commands.Bot):
 
 bot = SGDBot()
 
-def get_duration_name(duration_val: float):
-    if duration_val == 1.0:
-        return "1 Hour"
-    elif duration_val == 1.5:
-        return "1.5 Hours"
-    elif duration_val == 2.0:
-        return "2 Hours"
-    elif duration_val == 3.0:
-        return "3 Hours"
-
-async def create_raid_event(interaction: discord.Interaction, guild_key: str, template_name: str, duration, start_time, hoster: discord.Member, signup: discord.Message, event_type: str):
+async def create_raid_event(interaction: discord.Interaction, guild_key: str, template_name: str, duration: float, start_time, hoster: discord.Member, signup: discord.Message, event_type: str):
     
     if event_type == "key":
         title_map = KEY_TITLES
@@ -248,7 +231,7 @@ async def create_raid_event(interaction: discord.Interaction, guild_key: str, te
         env_var_name = RAID_VC_MAPPING.get(template_name.lower(), "CABAL_VC")
         vc_id_raw = os.getenv(env_var_name)
 
-    duration_str = get_duration_name(duration)
+    duration_str = f"{duration} Hour" if duration == 1 else f"{duration} Hours"
     custom_name = title_map.get(template_name, template_name.title()) + f" ({duration_str})"
     try:
         if not vc_id_raw:
@@ -307,16 +290,15 @@ async def create_raid_event(interaction: discord.Interaction, guild_key: str, te
     ]
 )
 @app_commands.checks.has_permissions(administrator=True)
-async def host(interaction: discord.Interaction, event_type: app_commands.Choice[str], guild: str, template_name: str, duration: float, time_string: str, hoster: discord.Member = None):
+async def host(interaction: discord.Interaction, event_type: app_commands.Choice[str], guild: str, template_name: str, duration: str, time_string: str, hoster: discord.Member = None):
     
     e_type = event_type.value
-    dur_val = duration
+    duration_float = float(duration)
 
-    if e_type == "raid" and dur_val not in [1.5, 3.0]:
+    if e_type == "raid" and duration_float not in [1.5, 3.0]:
         await interaction.response.send_message("❌ **Invalid Duration:** Raids must be **1.5** or **3** hours.", ephemeral=True)
         return
-    
-    if e_type == "key" and dur_val not in [1.0, 2.0]:
+    elif e_type == "key" and duration_float not in [1.0, 2.0]:
         await interaction.response.send_message("❌ **Invalid Duration:** Gold Keys must be **1** or **2** hours.", ephemeral=True)
         return
     
@@ -329,8 +311,7 @@ async def host(interaction: discord.Interaction, event_type: app_commands.Choice
     with open(file_path, "r", encoding="utf-8") as f:
         raw_content = f.read()
 
-    guild_key = guild
-    guild_info = GUILD_CONFIG[guild_key]
+    guild_info = GUILD_CONFIG[guild]
 
     dt = dateparser.parse(time_string, languages=['en'])
     
@@ -345,8 +326,7 @@ async def host(interaction: discord.Interaction, event_type: app_commands.Choice
         dt = dt.astimezone()
         
     discord_time = f"<t:{int(dt.timestamp())}:f>"
-    duration_str = get_duration_name(dur_val)
-    content_filled = raw_content.replace("{time}", discord_time).replace("{duration}", duration_str).replace("{guild_name}", guild_info['name'])
+    content_filled = raw_content.replace("{time}", discord_time).replace("{duration}", f"{duration} Hour" if duration_float == 1.0 else f"{duration} Hours").replace("{guild_name}", guild_info['name'])
 
     PINGS = [] 
     if "{guild_role}" in content_filled and "role_id" in guild_info:
@@ -405,13 +385,14 @@ async def host(interaction: discord.Interaction, event_type: app_commands.Choice
         except Exception:
             pass
 
-    discord_event = await create_raid_event(interaction, guild_key, template_name, dur_val, dt, hoster, msg, e_type)
+    discord_event = await create_raid_event(interaction, guild, template_name, duration_float, dt, hoster, msg, e_type)
     
     if discord_event:
         cal_title = discord_event.name
-        cal_end = dt + timedelta(hours=dur_val)
+        cal_end = dt + timedelta(hours=duration_float)
         cal_desc = f"Hosted by {hoster.display_name if hoster else guild_info['name']}\n\nSign up in Discord: {msg.jump_url}"
-        google_id, google_link = add_to_google_calendar(cal_title, cal_desc, dt, cal_end, discord_event.id)
+        cal_color = guild_info["googlecal_color"]
+        google_id, google_link = add_to_google_calendar(cal_title, cal_desc, dt, cal_end, discord_event.id, cal_color)
 
         if google_id:
             confirm_msg = f"\n🗓️ [View Full Calendar]({CALENDAR_PUBLIC_URL})"
@@ -422,11 +403,11 @@ async def host(interaction: discord.Interaction, event_type: app_commands.Choice
 async def guild_autocomplete(interaction: discord.Interaction, current: str):
     options = []
     event_type = getattr(interaction.namespace, 'event_type')
-    print(event_type)
 
     for guild in GUILD_CONFIG:
         if current.lower() in guild.lower() and GUILD_CONFIG[guild]["events"] == event_type:
             options.append(app_commands.Choice(name=GUILD_CONFIG[guild]["name"], value=guild))
+    
     return options[:25]
     
 @host.autocomplete('template_name')
@@ -442,21 +423,28 @@ async def templates_autocomplete(interaction: discord.Interaction, current: str)
     return options[:25]
 
 @host.autocomplete('duration')
-async def duration_autocomplete(interaction: discord.Interaction, current: float):
+async def duration_autocomplete(interaction: discord.Interaction, current: str):
     event_type = getattr(interaction.namespace, 'event_type')
-
+    options = []
+    choices = []
+    
     if event_type == 'raid':
-        raid_choices = [
-            app_commands.Choice(name="1.5 Hours", value=1.5),
-            app_commands.Choice(name="3 Hours", value=3.0)
+        choices = [
+            app_commands.Choice(name="1.5 Hours", value="1.5"),
+            app_commands.Choice(name="3 Hours", value="3")
         ]
-        return raid_choices
     else:
-        key_choices = [
-            app_commands.Choice(name="1 Hour", value=1.0),
-            app_commands.Choice(name="2 Hours", value=2.0)
+        choices = [
+            app_commands.Choice(name="1 Hour", value="1"),
+            app_commands.Choice(name="2 Hours", value="2")
         ]
-        return key_choices
+    
+    for time in choices:
+        if current.lower() in time.name.lower():
+            options.append(time)
+
+    return options[:25]
+
 
 @host.autocomplete('time_string')
 async def time_autocomplete(interaction: discord.Interaction, current: str):
@@ -473,21 +461,6 @@ async def time_autocomplete(interaction: discord.Interaction, current: str):
 
     return [app_commands.Choice(name="Keep typing...", value=current)]
 
-@bot.tree.command(name="get_emoji", description="Find the code for a server emoji and paste it into the TXT file to add it")
-@app_commands.describe(emoji_name="Start typing the emoji name")
-async def get_emoji(interaction: discord.Interaction, emoji_name: str):
-    await interaction.response.send_message(f"Here is your code:\n`{emoji_name}`", ephemeral=True)
+handler = logging.FileHandler(filename='discord.log', encoding='utf-8', mode='w')
 
-@get_emoji.autocomplete('emoji_name')
-async def emoji_autocomplete(interaction: discord.Interaction, current: str):
-    options = []
-    for emoji in interaction.guild.emojis:
-        if current.lower() in emoji.name.lower():
-            full_code = str(emoji) 
-            options.append(app_commands.Choice(name=emoji.name, value=full_code))
-            
-            if len(options) >= 25:
-                break
-    return options
-
-bot.run(BOT_TOKEN)
+bot.run(BOT_TOKEN, log_handler=handler, log_level=logging.DEBUG)
