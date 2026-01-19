@@ -83,7 +83,16 @@ RAID_TITLES = {
 
 KEY_TITLES = {
     "loremagus": "High Loremagus Gold Key",
-    "takanobu": "Takanobu The Masterless Gold Key"
+    "takanobu": "Takanobu The Masterless Gold Key",
+    "bunferatu": "Bunferatu Gold Key",
+    "ixcax": "Ixcax Gold Key",
+    "king_borr": "King Borr Gold Key",
+    "krampus": "Krampus Gold Key",
+    "lambent_fire": "Lambent Fire Gold Key",
+    "spirit_of_ignorance": "Spirit of Ignorance Gold Key",
+    "stonegaze": "Stonegaze Gold Key",
+    "drowned_dan": "Drowned Dan Gold Key"
+
 }
 
 

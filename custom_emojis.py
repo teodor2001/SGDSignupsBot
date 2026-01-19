@@ -1,6 +1,14 @@
 from discord import PartialEmoji
 
 #Mobs
+Bunferatu = PartialEmoji.from_str("<:Bunferatu:1462778677967454384>")
+Ixcax = PartialEmoji.from_str("<:Ixcax:1462778715082588210>")
+KingBorr = PartialEmoji.from_str("<:KingBorr:1462778832716173423>")
+Krampus = PartialEmoji.from_str("<:Krampus:1462778875711983626>")
+LambentFire = PartialEmoji.from_str("<:LambentFire:1462778905600462912>")
+SpiritOfIgnorance = PartialEmoji.from_str("<:SpiritOfIgnorance:1462778935761965167>")
+Stonegaze = PartialEmoji.from_str("<:Stonegaze:1462778969727176737>")
+Takanobu = PartialEmoji.from_str("<:Takanobu:1462779001272668282>")
 Drowneddan = PartialEmoji.from_str("<:Drowneddan:1462358770725163229>")
 Loremagus = PartialEmoji.from_str("<:Loremagus:1462230412528189460>")
 Ghastly = PartialEmoji.from_str("<:Ghastly:1459655393536905338>")
