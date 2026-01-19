@@ -30,6 +30,7 @@ Myth_Role = PartialEmoji.from_str("<:Myth_Role:1459656056551772336>")
 Storm_Role = PartialEmoji.from_str("<:Storm_Role:1459656023232217204>")
 
 #Cosplay Roles
+Dorm_Role = PartialEmoji.from_str("<:Dorm_Role:1462537257880784896>")
 Fife_Role = PartialEmoji.from_str("<:Fife_Role:1459655115009949859>")
 Form_Role = PartialEmoji.from_str("<:Form_Role:1459655141488590878>")
 Fyth_Role = PartialEmoji.from_str("<:Fyth_Role:1459655164397883424>")
