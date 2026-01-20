@@ -38,6 +38,7 @@ Morm_Role = PartialEmoji.from_str("<:Morm_Role:1459655184920744001>")
 Stire_Role = PartialEmoji.from_str("<:Stire_Role:1460389652975321375>")
 Styth_Role = PartialEmoji.from_str("<:Styth_Role:1459655210006745110>")
 Dorm_Role = PartialEmoji.from_str("<:Dorm_Role:1462537373945430056>")
+Ire_Role = PartialEmoji.from_str("<:Ire_Role:1463292305208381602>")
 
 #Numbers
 eleven = PartialEmoji.from_str("<:eleven:1459667831212871741>")

@@ -1,0 +1,35 @@
+## VOD Only 🚨
+ 
+⏰ Date and Time: {time}
+⌛ **Duration:** `{duration}`
+
+## __{guild_name} Raid__ 🚨
+
+{guild_role} {raider}
+
+**Please Be In VC 30 Mins Before Raid - Make a ticket with any questions, comments, or concerns**
+
+### __VOD Team:__
+1️⃣ Support 1 -
+2️⃣ Support 2 -
+3️⃣ :Ire_Role: -ire - 
+4️⃣ :Fire_Role: Fire -
+
+
+5️⃣ :Ice_role: Ice -
+6️⃣ :Storm_Role: Storm -
+7️⃣ :Death_Role: Death -
+8️⃣ :Life_Role: Life -
+9️⃣ :Myth_Role: Myth -
+🔟 :Blance_Role: Balance -
+:eleven: :Spiral: Any school -
+:twelve: :Spiral: Any School -
+
+✅I need a guild invite
+
+**👑Team/Side Captains👑**
+
+NERDS PLEASE LOOK AT THE GUIDE AS IT CHANGES DAILY! (You could also look at it because it's very pretty, that's a valid reason too)
+
+**Guide:**
+[VOD Guide](https://docs.google.com/presentation/d/14L5Br2BjqJtdER8-wFfX_Rc1Xiq0fwuoQTvF_2ZUkCo/edit?usp=sharing)
