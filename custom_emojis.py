@@ -54,3 +54,61 @@ purple_banner = PartialEmoji.from_str("<:purple_banner:1460516302581141546>")
 
 #Random
 GoldKey = PartialEmoji.from_str("<:GoldKey:1462230767231963230>")
+
+#DualSchools
+
+#Balance
+Balance_Death = PartialEmoji.from_str("<:Balance_Death:1463925353633415360>")
+Balance_Fire = PartialEmoji.from_str("<:Balance_Fire:1463925385988145235>")
+Balance_Ice = PartialEmoji.from_str("<:Balance_Ice:1463925408981454908>")
+Balance_Life = PartialEmoji.from_str("<:Balance_Life:1463925432788193353>")
+Balance_Myth = PartialEmoji.from_str("<:Balance_Myth:1463925459178885298>")
+Balance_Storm = PartialEmoji.from_str("<:Balance_Storm:1463925480938930227>")
+
+#Death
+Death_Balance = PartialEmoji.from_str("<:Death_Balance:1463925501595877651>")
+Death_Fire = PartialEmoji.from_str("<:Death_Fire:1463925519677522022>")
+Death_Ice = PartialEmoji.from_str("<:Death_Ice:1463925538631716938>")
+Death_Life = PartialEmoji.from_str("<:Death_Life:1463925558403534889>")
+Death_Myth = PartialEmoji.from_str("<:Death_Myth:1463925593828757545>")
+Death_Storm = PartialEmoji.from_str("<:Death_Storm:1463925618407247893>")
+
+#Fire
+Fire_Balance = PartialEmoji.from_str("<:Fire_Balance:1463925642134425754>")
+Fire_Death = PartialEmoji.from_str("<:Fire_Death:1463925661491134608>")
+Fire_Ice = PartialEmoji.from_str("<:Fire_Ice:1463925682001416324>")
+Fire_Life = PartialEmoji.from_str("<:Fire_Life:1463925703685705932>")
+Fire_Myth = PartialEmoji.from_str("<:Fire_Myth:1463925722178650112>")
+Fire_Storm = PartialEmoji.from_str("<:Fire_Storm:1463925746698424448>")
+
+#Ice
+Ice_Balance = PartialEmoji.from_str("<:Ice_Balance:1463925777702719712>")
+Ice_Death = PartialEmoji.from_str("<:Ice_Death:1463925808740438037>")
+Ice_Fire = PartialEmoji.from_str("<:Ice_Fire:1463925833747005552>")
+Ice_Life = PartialEmoji.from_str("<:Ice_Life:1463925865716125807>")
+Ice_Myth = PartialEmoji.from_str("<:Ice_Myth:1463925890437218479>")
+Ice_Storm = PartialEmoji.from_str("<:Ice_Storm:1463925939783340265>")
+
+#Life
+Life_Balance = PartialEmoji.from_str("<:Life_Balance:1463925981046636737>")
+Life_Death = PartialEmoji.from_str("<:Life_Death:1463926005558415462>")
+Life_Fire = PartialEmoji.from_str("<:Life_Fire:1463926027737763894>")
+Life_Ice = PartialEmoji.from_str("<:Life_Ice:1463926061854359552>")
+Life_Myth = PartialEmoji.from_str("<:Life_Myth:1463926106322243719>")
+Life_Storm = PartialEmoji.from_str("<:Life_Storm:1463926128887726080>")
+
+#Myth
+Myth_Balance = PartialEmoji.from_str("<:Myth_Balance:1463926161313890528>")
+Myth_Death = PartialEmoji.from_str("<:Myth_Death:1463926182331551795>")
+Myth_Fire = PartialEmoji.from_str("<:Myth_Fire:1463926220818350227>")
+Myth_Ice = PartialEmoji.from_str("<:Myth_Ice:1463926242578399283>")
+Myth_Life = PartialEmoji.from_str("<:Myth_Life:1463926268411121889>")
+Myth_Storm = PartialEmoji.from_str("<:Myth_Storm:1463926294399025224>")
+
+#Storm
+Storm_Balance = PartialEmoji.from_str("<:Storm_Balance:1463926339756097751>")
+Storm_Death = PartialEmoji.from_str("<:Storm_Death:1463926364246900746>")
+Storm_Fire = PartialEmoji.from_str("<:Storm_Fire:1463926398749245458>")
+Storm_Ice = PartialEmoji.from_str("<:Storm_Ice:1463926421377515673>")
+Storm_Life = PartialEmoji.from_str("<:Storm_Life:1463926440088174773>")
+Storm_Myth = PartialEmoji.from_str("<:Storm_Myth:1463926465342214176>")
