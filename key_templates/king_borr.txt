@@ -9,10 +9,12 @@
 {guild_role} {raider}
 
 :Storm_Role: __Strategy__ (3 turns)
-1️⃣ Balance Feint OR Indemnity Feint BOSS - PASS - Potent Feint BOSS
+1️⃣ Balance Feint OR Indemnity Feint BOSS - PASS - Potent Feint MINION
 2️⃣ 55% blade (Gumshoe/ Sharpen Weaved) - PASS - Blade P4
 3️⃣ Beguille MINION - PASS - Feint MINION
 4️⃣ :Storm_Role: Tree Of Strife (Teacup) - PASS - Lightning Bats
+
+[King Borr Guide](https://docs.google.com/presentation/d/1YHmtOje__0ZKCBYUGdKfEY-i0uWOgpmfhQ-VB-Puo-0/edit?pli=1&slide=id.g3b8c12846ee_1_103#slide=id.g3b8c12846ee_1_103)
 
 ✅ I  need guild invite
 ⭕ I want 2+ spots
