@@ -21,7 +21,8 @@ SERVICE_ACCOUNT_FILE = 'service_account.json'
 CALENDAR_ID = os.getenv('CALENDAR_ID')
 CALENDAR_PUBLIC_URL = os.getenv('CALENDAR_PUBLIC_URL')
 GOLD_KEY_VC_ID = os.getenv('GOLD_KEY_VC')
-RAIDER_ROLE_ID = 1458979856938307750
+MUSEUM_VC_ID = os.getenv('MUSEUM_VC')
+RAIDER_ROLE_ID = os.getenv('RAIDER_ROLE_ID')
 
 
 if SERVER_ID_RAW:
@@ -75,7 +76,8 @@ RAID_TITLES = {
     "cabal": "Cabal's Revenge Raid",
     "void": "Voracious Void Raid",
     "cryingsky": "Crying Sky Raid",
-    "poak": "Poison Oak Side Boss Only Raid"
+    "poak": "Poison Oak Side Boss Only Raid",
+    "vod" : "Voice Of Death Only Raid"
 }
 
 KEY_TITLES = {
@@ -88,8 +90,8 @@ KEY_TITLES = {
     "lambent_fire": "Lambent Fire Gold Key",
     "spirit_of_ignorance": "Spirit of Ignorance Gold Key",
     "stonegaze": "Stonegaze Gold Key",
-    "drowned_dan": "Drowned Dan Gold Key"
-
+    "drowned_dan": "Drowned Dan Gold Key",
+    "baron_von_bracken" : "Baron Von Bracken Gold Key"
 }
 
 def update_template_cache(event: str):
@@ -180,9 +182,12 @@ class SGDBot(commands.Bot):
             #await self.tree.sync()
             self.tree.clear_commands(guild=SERVER_ID)
             self.tree.copy_global_to(guild=SERVER_ID)
+            #await self.tree.sync()
+            await self.tree.sync(guild=SERVER_ID)
+            print("Commands synced for the specific server!")
+        else:
             await self.tree.sync()
-            print("Commands synced!")
-        
+            print("Commands synced globally (slow)")
         self.tree.on_error = self.on_tree_error
 
     async def on_tree_error(self, interaction: discord.Interaction, error: app_commands.AppCommandError):
@@ -226,6 +231,10 @@ async def create_raid_event(interaction: discord.Interaction, guild_key: str, te
     if event_type == "key":
         title_map = KEY_TITLES
         vc_id_raw = GOLD_KEY_VC_ID
+
+    elif event_type == "museum":
+        title_map = {"museum": "Museum Guild Event"}
+        vc_id_raw = MUSEUM_VC_ID
     else:
         title_map = RAID_TITLES
         env_var_name = RAID_VC_MAPPING.get(template_name.lower(), "CABAL_VC")
@@ -274,7 +283,7 @@ async def create_raid_event(interaction: discord.Interaction, guild_key: str, te
         await interaction.followup.send(f"⚠️ Event creation failed: {e}", ephemeral=True)
         return None
 
-@bot.tree.command(name="host", description="Post a raid or gold key run from a text file")
+@bot.tree.command(name="host", description="Post a raid, a gold key run or a museum run from a text file")
 @app_commands.describe(
     event_type="Is this a Raid or a Gold Key?",
     guild="Which guild is hosting?",
@@ -286,7 +295,8 @@ async def create_raid_event(interaction: discord.Interaction, guild_key: str, te
 @app_commands.choices(
     event_type=[
         app_commands.Choice(name="Raid", value="raid"),
-        app_commands.Choice(name="Gold Key", value="key")
+        app_commands.Choice(name="Gold Key", value="key"),
+        app_commands.Choice(name="Museum", value="museum")
     ]
 )
 @app_commands.checks.has_permissions(administrator=True)
@@ -301,8 +311,15 @@ async def host(interaction: discord.Interaction, event_type: app_commands.Choice
     elif e_type == "key" and duration_float not in [1.0, 2.0]:
         await interaction.response.send_message("❌ **Invalid Duration:** Gold Keys must be **1** or **2** hours.", ephemeral=True)
         return
+    elif e_type == "museum" and duration_float not in [1.5]:
+        await interaction.response.send_message("❌ **Invalid Duration:** Museum events must be 1.5 hours", ephemeral=True)
+        return
+
+    if e_type == "museum":
+        file_path = f"{template_name}.txt"
     
-    file_path = f"{e_type}_templates/{template_name}.txt"
+    else:
+        file_path = f"{e_type}_templates/{template_name}.txt"
     
     if not os.path.exists(file_path):
         await interaction.response.send_message(f"Template `{e_type}_templates/{template_name}.txt` not found", ephemeral=True)
@@ -352,7 +369,7 @@ async def host(interaction: discord.Interaction, event_type: app_commands.Choice
     final_content = re.sub(r':(\w+):', replace_emoji_name, content_filled)
 
     reactions_to_add = []
-    ALL_POSSIBLE_REACTIONS = ['1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣', '7️⃣', '8️⃣', '9️⃣', '🔟',custom_emojis.eleven,custom_emojis.twelve,custom_emojis.thirteen,custom_emojis.fourteen,'✅']
+    ALL_POSSIBLE_REACTIONS = ['1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣', '7️⃣', '8️⃣', '9️⃣', '🔟',custom_emojis.eleven,custom_emojis.twelve,custom_emojis.thirteen,custom_emojis.fourteen,'✅','⭕']
 
     for emoji_obj in ALL_POSSIBLE_REACTIONS:
         if str(emoji_obj) in final_content:
@@ -405,8 +422,9 @@ async def guild_autocomplete(interaction: discord.Interaction, current: str):
     event_type = getattr(interaction.namespace, 'event_type')
 
     for guild in GUILD_CONFIG:
-        if current.lower() in guild.lower() and GUILD_CONFIG[guild]["events"] == event_type:
-            options.append(app_commands.Choice(name=GUILD_CONFIG[guild]["name"], value=guild))
+        if current.lower() in guild.lower():
+            if event_type == 'museum' or GUILD_CONFIG[guild]["events"] == event_type:
+                options.append(app_commands.Choice(name=GUILD_CONFIG[guild]["name"], value=guild))
     
     return options[:25]
     
@@ -415,11 +433,18 @@ async def templates_autocomplete(interaction: discord.Interaction, current: str)
     options = []
     event_type = getattr(interaction.namespace, 'event_type')
 
-    templates = update_template_cache(event_type)
+    #templates = update_template_cache(event_type)
+
+    if event_type == "museum":
+        if "museum" in "museum".lower() and current.lower() in "museum":
+             options.append(app_commands.Choice(name="Museum", value="museum"))
+    else:
+        templates = update_template_cache(event_type)
+        for name in templates:
+            if current.lower() in name.lower():
+                options.append(app_commands.Choice(name=name.capitalize(), value=name))
+
     
-    for name in templates:
-        if current.lower() in name.lower():
-            options.append(app_commands.Choice(name=name.capitalize(), value=name))
     return options[:25]
 
 @host.autocomplete('duration')
@@ -432,6 +457,11 @@ async def duration_autocomplete(interaction: discord.Interaction, current: str):
         choices = [
             app_commands.Choice(name="1.5 Hours", value="1.5"),
             app_commands.Choice(name="3 Hours", value="3")
+        ]
+    
+    elif event_type == 'museum':
+        choices = [
+            app_commands.Choice(name="1.5 Hours", value="1.5"),
         ]
     else:
         choices = [

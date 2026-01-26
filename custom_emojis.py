@@ -18,6 +18,7 @@ Divinecabalist = PartialEmoji.from_str("<:Divinecabalist:1459655632503439371>")
 Poisonoak = PartialEmoji.from_str("<:Poisonoak:1460392129041006816>")
 Hunhau = PartialEmoji.from_str("<:Hunhau:1459655710966157374>")
 Nullity = PartialEmoji.from_str("<:Nullity:1459655817916842246>")
+BaronVonBracken = PartialEmoji.from_str("<:BaronVonBracken:1465321352817807473>")
 
 #School Roles
 Spiral = PartialEmoji.from_str("<:Spiral:1459655892269142271>")
@@ -39,6 +40,7 @@ Stire_Role = PartialEmoji.from_str("<:Stire_Role:1460389652975321375>")
 Styth_Role = PartialEmoji.from_str("<:Styth_Role:1459655210006745110>")
 Dorm_Role = PartialEmoji.from_str("<:Dorm_Role:1462537373945430056>")
 Ire_Role = PartialEmoji.from_str("<:Ire_Role:1463292305208381602>")
+Lire_Role = PartialEmoji.from_str("<:Life_Fire:1463926027737763894>")
 
 #Numbers
 eleven = PartialEmoji.from_str("<:eleven:1459667831212871741>")
@@ -55,7 +57,15 @@ purple_banner = PartialEmoji.from_str("<:purple_banner:1460516302581141546>")
 #Random
 GoldKey = PartialEmoji.from_str("<:GoldKey:1462230767231963230>")
 
-#DualSchools
+#Universal
+Spiral_Balance = PartialEmoji.from_str("<:Spiral_Balance:1465331812493693033>")
+Spiral_Death = PartialEmoji.from_str("<:Spiral_Death:1465331862363705435>")
+Spiral_Fire = PartialEmoji.from_str("<:Spiral_Fire:1465331897134612520>")
+Spiral_Ice = PartialEmoji.from_str("<:Spiral_Ice:1465331932844916869>")
+Spiral_Life = PartialEmoji.from_str("<:Spiral_Life:1465331968836112425>")
+Spiral_Myth = PartialEmoji.from_str("<:Spiral_Myth:1465331999530287299>")
+Spiral_Storm = PartialEmoji.from_str("<:Spiral_Storm:1465332054169223229>")
+
 
 #Balance
 Balance_Death = PartialEmoji.from_str("<:Balance_Death:1463925353633415360>")

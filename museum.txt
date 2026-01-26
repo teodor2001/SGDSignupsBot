@@ -1,0 +1,17 @@
+## 🏛️ **Museum Event** 🏛️
+ 
+⏰ Date and Time: {time}
+⌛ **Duration:** `{duration}`
+
+## __{guild_name} Raid__ 🚨
+
+{guild_role} {raider}
+
+**Please Be In VC 10 Mins Before Museum run - DM <@123456789012345678> for any questions, comments, or concerns**
+
+1️⃣ Support 1: Mass Feint
+2️⃣ Support 2: Weaving Blade/Feint (on bosses)
+3️⃣ Support 3: Elemental blade
+4️⃣ Storm hitter: Colossal Enchant Tempest
+
+✅ need a guild invite
