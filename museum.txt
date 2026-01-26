@@ -7,7 +7,7 @@
 
 {guild_role} {raider}
 
-**Please Be In VC 10 Mins Before Museum run - DM <@123456789012345678> for any questions, comments, or concerns**
+**Please Be In VC 10 Mins Before Museum run - DM {museum_contact} for any questions, comments, or concerns**
 
 1️⃣ Support 1: Mass Feint
 2️⃣ Support 2: Weaving Blade/Feint (on bosses)

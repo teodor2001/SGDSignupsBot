@@ -23,6 +23,7 @@ CALENDAR_PUBLIC_URL = os.getenv('CALENDAR_PUBLIC_URL')
 GOLD_KEY_VC_ID = os.getenv('GOLD_KEY_VC')
 MUSEUM_VC_ID = os.getenv('MUSEUM_VC')
 RAIDER_ROLE_ID = os.getenv('RAIDER_ROLE_ID')
+MUSEUM_CONTACT_ID = os.getenv('MUSEUM_CONTACT_ID')
 
 
 if SERVER_ID_RAW:
@@ -343,8 +344,8 @@ async def host(interaction: discord.Interaction, event_type: app_commands.Choice
         dt = dt.astimezone()
         
     discord_time = f"<t:{int(dt.timestamp())}:f>"
-    content_filled = raw_content.replace("{time}", discord_time).replace("{duration}", f"{duration} Hour" if duration_float == 1.0 else f"{duration} Hours").replace("{guild_name}", guild_info['name'])
-
+    #content_filled = raw_content.replace("{time}", discord_time).replace("{duration}", f"{duration} Hour" if duration_float == 1.0 else f"{duration} Hours").replace("{guild_name}", guild_info['name'])
+    content_filled = raw_content.replace("{time}", discord_time).replace("{duration}", f"{duration} Hour" if duration_float == 1.0 else f"{duration} Hours").replace("{guild_name}", guild_info['name']).replace("{museum_contact}", f"<@{MUSEUM_CONTACT_ID}>")
     PINGS = [] 
     if "{guild_role}" in content_filled and "role_id" in guild_info:
         r_id = guild_info['role_id']
