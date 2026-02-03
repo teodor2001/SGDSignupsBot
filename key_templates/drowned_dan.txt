@@ -3,13 +3,14 @@
 
 ⏰ **Date and Time:** {time}
 ⌛ **Duration:** `{duration}`
+# :CelestialIntervention::NautilusUnleashed::ShipOfFools::SpiritualTribunal:
 
 ## __{guild_name}__ 🚨
 
 {guild_role} {raider}
 
-:Dorm_Role: __Strategy__
-1️⃣ :Dorm_Role: Threefold boss - Jolt boss
+:Death_Storm: __Strategy__
+1️⃣ :Death_Storm: Threefold boss - Jolt boss
 2️⃣ 0 pip blade p4 - Pluto B boss 
 3️⃣ 45% blade p4 - Potent feint boss
 4️⃣ Frenzy - 7 pip aoe

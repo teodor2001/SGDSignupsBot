@@ -17,9 +17,9 @@
 
 ### CTO
 5️⃣:Spiral: Elf Support 
-6️⃣:Form_Role: Elf Hitter
+6️⃣:Fire_Storm: Elf Hitter
 7️⃣:Spiral: Surge Support
-8️⃣:Fyth_Role: Surge Hitter
+8️⃣:Fire_Myth: Surge Hitter
 
 ### STO
 9️⃣:Spiral: Close Drum

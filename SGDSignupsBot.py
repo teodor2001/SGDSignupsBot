@@ -437,7 +437,7 @@ async def templates_autocomplete(interaction: discord.Interaction, current: str)
     #templates = update_template_cache(event_type)
 
     if event_type == "museum":
-        if "museum" in "museum".lower() and current.lower() in "museum":
+        if current.lower() in "museum":
              options.append(app_commands.Choice(name="Museum", value="museum"))
     else:
         templates = update_template_cache(event_type)

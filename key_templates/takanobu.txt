@@ -3,6 +3,7 @@
 
 ⏰ **Date and Time:** {time}
 ⌛ **Duration:** `{duration}`
+# :CatchOfTheDay::NinjaPig::IceElemental::ABaahhCalypse::MonkOfMourning::Samoorai::GoatMonk:
 
 ## __{guild_name}__ 🚨
 

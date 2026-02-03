@@ -3,6 +3,7 @@
 
 ⏰ **Date and Time:** {time}
 ⌛ **Duration:** `{duration}`
+# :Ettin::HandsomeFomori::Catalan::SirBadger:
 
 ## __{guild_name}__ 🚨
 

@@ -3,6 +3,7 @@
 
 ⏰ **Date and Time:** {time}
 ⌛ **Duration:** `{duration}`
+# :BrimstoneRevenant::KeeperOfTheFlame::Loremaster::LuminousWeaver:
 
 ## __{guild_name}__ 🚨
 
@@ -12,7 +13,7 @@
 1️⃣ Sharpen Elemental
 2️⃣ 55% blade (Gumshoe / Sharpen Weaved) / Sharpen Blade + WC Hex
 3️⃣ IC Backdraft (not a fire)
-4️⃣ :Stire_Role: Phantasmania 
+4️⃣ :Storm_Fire: Phantasmania 
 
 :Storm_Role: __Strategy__ (-Orm with 209% or more dmg)
 5️⃣ 55% blade

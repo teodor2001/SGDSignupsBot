@@ -3,6 +3,7 @@
 
 ⏰ **Date and Time:** {time}
 ⌛ **Duration:** `{duration}`
+# :KrampusSpell::ReindeerKnight:
 
 ## __{guild_name}__ 🚨
 
