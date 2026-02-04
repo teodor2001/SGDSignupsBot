@@ -7,7 +7,7 @@
 
 ## __{guild_name}__ 🚨
 
-{guild_role} {raider}
+{guild_role}
 
 :Death_Storm: __Strategy__
 1️⃣ :Death_Storm: Threefold boss - Jolt boss

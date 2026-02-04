@@ -7,7 +7,7 @@
 
 ## __{guild_name}__ 🚨
 
-{guild_role} {raider}
+{guild_role}
 
 :Storm_Role: __Strategy__
 1️⃣ 55% blade (Gumshoe / Sharpen Weaved)

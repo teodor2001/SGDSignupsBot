@@ -353,10 +353,10 @@ async def host(interaction: discord.Interaction, event_type: app_commands.Choice
         content_filled = content_filled.replace("{guild_role}", mention)
         PINGS.append(mention)
 
-    if "{raider}" in content_filled:
-        mention = f"<@&{RAIDER_ROLE_ID}>"
-        content_filled = content_filled.replace("{raider}", mention)
-        PINGS.append(mention)
+    #if "{raider}" in content_filled:
+    #    mention = f"<@&{RAIDER_ROLE_ID}>"
+    #    content_filled = content_filled.replace("{raider}", mention)
+    #    PINGS.append(mention)
 
     def replace_emoji_name(match):
         name = match.group(1)
@@ -368,7 +368,7 @@ async def host(interaction: discord.Interaction, event_type: app_commands.Choice
         return match.group(0)
 
     final_content = re.sub(r':(\w+):', replace_emoji_name, content_filled)
-
+    
     reactions_to_add = []
     ALL_POSSIBLE_REACTIONS = ['1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣', '7️⃣', '8️⃣', '9️⃣', '🔟',custom_emojis.eleven,custom_emojis.twelve,custom_emojis.thirteen,custom_emojis.fourteen,'✅','⭕']
 

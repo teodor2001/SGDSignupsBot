@@ -5,7 +5,7 @@
 
 ## __{guild_name}__ 🚨
 
-{guild_role} {raider}
+{guild_role}
 
 **Please Be In VC 30 Mins Before Raid - Make a ticket with any questions, comments, or concerns**
 
