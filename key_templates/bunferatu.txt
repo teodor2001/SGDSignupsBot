@@ -10,16 +10,16 @@
 {guild_role}
 
 :Fire_Role: __Strategy__
-1️⃣ IC Backdraft
-2️⃣ Mass Feint
-3️⃣ :Fire_Role: Scald
-4️⃣ 🚨 Incindiate (Deca-Deck Tier 5+ requiered!!)
+1️⃣ P1
+2️⃣ P2
+3️⃣ P3 :Fire_Role:
+4️⃣ P4 🚨(Deca-Deck Tier 5+ requiered!!)
 
 :Storm_Role: __Strategy__
-5️⃣ IC Potent Feint
-6️⃣ Mass Feint + WC Hex
-7️⃣ Potent Feint
-8️⃣ :Storm_Role: Bunyip
+5️⃣ P1
+6️⃣ P2
+7️⃣ P3
+8️⃣ P4 :Storm_Role:
 
 [Bunferatu Guide](https://docs.google.com/presentation/d/1YHmtOje__0ZKCBYUGdKfEY-i0uWOgpmfhQ-VB-Puo-0/edit?pli=1&slide=id.g3b8c854dcae_0_21#slide=id.g3b8c854dcae_0_21)
 

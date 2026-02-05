@@ -10,16 +10,16 @@
 {guild_role}
 
 :Fire_Role: __Strategy__
-1️⃣ Attenuate OR Supernova OR Thieving Dragon (:Ice_Role: Spell)
-2️⃣ Mass Feint + WC Hex
-3️⃣ :Fire_Role: Scald
-4️⃣ 🚨 Incindiate (Deca-Deck Tier 5+ requiered!!)
+1️⃣ P1
+2️⃣ P2
+3️⃣ P3 :Fire_Role:
+4️⃣ P4 🚨(Deca-Deck Tier 5+ requiered!!)
 
 :Storm_Role: __Strategy__
-5️⃣ Attenuate OR Supernova OR Thieving Dragon (:Ice_Role: Spell)
-6️⃣ Mass Feint + WC Hex
-7️⃣ :Storm_Role: Tree Of Strife (Teacup) 
-8️⃣ :Storm_Role: Bunyip
+5️⃣ P1
+6️⃣ P2
+7️⃣ P3 :Storm_Role:
+8️⃣ P4 :Storm_Role:
 
 [Spirit Of Ignorane Guide](https://docs.google.com/presentation/d/1YHmtOje__0ZKCBYUGdKfEY-i0uWOgpmfhQ-VB-Puo-0/edit?pli=1&slide=id.g3b8c12846ee_1_65#slide=id.g3b8c12846ee_1_65)
 

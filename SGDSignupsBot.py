@@ -10,6 +10,8 @@ from dotenv import load_dotenv
 from datetime import timedelta
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
+import io
+import aiohttp
 
 warnings.filterwarnings("ignore", category=DeprecationWarning)
 
@@ -24,6 +26,7 @@ GOLD_KEY_VC_ID = os.getenv('GOLD_KEY_VC')
 MUSEUM_VC_ID = os.getenv('MUSEUM_VC')
 RAIDER_ROLE_ID = os.getenv('RAIDER_ROLE_ID')
 MUSEUM_CONTACT_ID = os.getenv('MUSEUM_CONTACT_ID')
+SLIDES_PRESENTATION_ID = os.getenv('SLIDES_PRESENTATION_ID')
 
 
 if SERVER_ID_RAW:
@@ -32,7 +35,23 @@ else:
     print("WARNING: SERVER_ID not found in .env file.")
     SERVER_ID = None 
 
-SCOPES = ['https://www.googleapis.com/auth/calendar']
+SCOPES = ['https://www.googleapis.com/auth/calendar',
+          'https://www.googleapis.com/auth/presentations.readonly']
+
+
+KEY_SLIDE_MAPPING = {
+    "baron_von_bracken": "g3bdf3964175_5_0",
+    "bunferatu": "g3b8c854dcae_0_21",
+    "drowned_dan": "g3c27fd1b17b_0_55",
+    "ixcax": "g3b8c12846ee_1_81",
+    "king_borr": "g3b8c12846ee_1_103",
+    "krampus": "g3b8c854dcae_0_5",
+    "lambent_fire": "g3b8c12846ee_1_49",
+    "loremagus": "g3b8c12846ee_0_161",
+    "spirit_of_ignorance": "g3b8c12846ee_1_65",
+    "stonegaze": "g3bcc5e44cad_0_0",
+    "takanobu": "g3b8c12846ee_1_33"
+}
 
 RAID_VC_MAPPING = {
     "ghastly": "GHASTLY_VC",
@@ -94,6 +113,34 @@ KEY_TITLES = {
     "drowned_dan": "Drowned Dan Gold Key",
     "baron_von_bracken" : "Baron Von Bracken Gold Key"
 }
+async def get_slide_image_file(presentation_id, page_id, filename):
+    try:
+        if not presentation_id:
+            print("❌ Error: SLIDES_PRESENTATION_ID is missing in .env")
+            return None
+        creds = service_account.Credentials.from_service_account_file(
+            SERVICE_ACCOUNT_FILE, scopes=SCOPES)
+        service = build('slides', 'v1', credentials=creds)
+
+        response = service.presentations().pages().getThumbnail(
+            presentationId=presentation_id,
+            pageObjectId=page_id,
+            thumbnailProperties_thumbnailSize='LARGE'
+        ).execute()
+
+        content_url = response.get('contentUrl')
+        if not content_url:
+            return None
+        async with aiohttp.ClientSession() as session:
+            async with session.get(content_url) as resp:
+                if resp.status == 200:
+                    data = await resp.read()
+                    return discord.File(io.BytesIO(data), filename=f"{filename}.png")
+                
+    except Exception as e:
+        print(f"❌ Failed to fetch slide image: {e}")
+        return None
+    return None
 
 def update_template_cache(event: str):
     folder = f"{event}_templates"
@@ -201,10 +248,10 @@ class SGDBot(commands.Bot):
         if isinstance(error, discord.NotFound) and error.code == 10062:
             return 
         
-        if isinstance(error, app_commands.MissingPermissions):
-            if not interaction.response.is_done():
-                await interaction.response.send_message("⛔ You need Administrator permissions.", ephemeral=True)
-            return
+        #if isinstance(error, app_commands.MissingPermissions):
+            #if not interaction.response.is_done():
+                #await interaction.response.send_message("⛔ You need Administrator permissions.", ephemeral=True)
+            #return
 
         print(f"⚠️ Unhandled Error: {error}")
 
@@ -300,7 +347,7 @@ async def create_raid_event(interaction: discord.Interaction, guild_key: str, te
         app_commands.Choice(name="Museum", value="museum")
     ]
 )
-@app_commands.checks.has_permissions(administrator=True)
+#@app_commands.checks.has_permissions(administrator=True)
 async def host(interaction: discord.Interaction, event_type: app_commands.Choice[str], guild: str, template_name: str, duration: str, time_string: str, hoster: discord.Member = None):
     
     e_type = event_type.value
@@ -382,12 +429,27 @@ async def host(interaction: discord.Interaction, event_type: app_commands.Choice
          return
 
     logo_file = discord.File(logo_filename, filename=logo_filename)
+    files_to_send = [logo_file] 
 
     author_title = f"{guild_info['name']} {e_type.title()}"
     embed = discord.Embed(description=final_content, color=guild_info['color'])
     embed.set_thumbnail(url=f"attachment://{logo_filename}")
     embed.set_author(name=author_title, icon_url=f"attachment://{logo_filename}")
-    
+
+    if e_type == "key":
+        if template_name in KEY_SLIDE_MAPPING:
+            page_id = KEY_SLIDE_MAPPING[template_name]
+
+            slide_file = await get_slide_image_file(SLIDES_PRESENTATION_ID, page_id, template_name)
+            
+            if slide_file:
+                files_to_send.append(slide_file)
+                embed.set_image(url=f"attachment://{template_name}.png")
+            else:
+                print(f"⚠️ Could not fetch slide for {template_name}")
+        else:
+             print(f"ℹ️ No slide mapping found for {template_name}")
+
     if hoster:
         embed.set_footer(text=f"Hosted by {hoster.display_name} | SGD Alliance", icon_url=hoster.display_avatar.url)
     else:
@@ -395,7 +457,8 @@ async def host(interaction: discord.Interaction, event_type: app_commands.Choice
 
     await interaction.response.send_message("Raid posted!", ephemeral=True)
     ping_content = " ".join(PINGS) if PINGS else None
-    msg = await interaction.channel.send(content=ping_content, file=logo_file, embed=embed)
+    
+    msg = await interaction.channel.send(content=ping_content, files=files_to_send, embed=embed)
     
     for reaction in reactions_to_add:
         try:

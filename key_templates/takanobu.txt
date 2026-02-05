@@ -10,16 +10,16 @@
 {guild_role}
 
 :Storm_Role: __Strategy__
-1️⃣ 55% blade (Gumshoe / Sharpen Weaved)
-2️⃣ Potent Feint BOSS
-3️⃣ Sharpen Elemental Blade
-4️⃣ :Storm_Role: Bunyip
+1️⃣ P1
+2️⃣ P2
+3️⃣ P3
+4️⃣ P4 :Storm_Role:
 
 :Myth_Role: __Strategy__
-5️⃣ 55% blade (Gumshoe / Sharpen Weaved)
-6️⃣ Potent Feint BOSS
-7️⃣ Sharpen Spirit Blade
-8️⃣ :Myth_Role: Drop Bear Fury
+5️⃣ P1
+6️⃣ P2
+7️⃣ P3
+8️⃣ P4 :Myth_Role:
 
 [Takanobu the Masterless Guide](https://docs.google.com/presentation/d/1YHmtOje__0ZKCBYUGdKfEY-i0uWOgpmfhQ-VB-Puo-0/edit?pli=1&slide=id.g3b8c12846ee_1_33#slide=id.g3b8c12846ee_1_33)
 

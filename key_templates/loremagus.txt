@@ -10,16 +10,16 @@
 {guild_role}
 
 :Fire_Role: __Strategy__
-1️⃣ Sharpen Elemental
-2️⃣ 55% blade (Gumshoe / Sharpen Weaved) / Sharpen Blade + WC Hex
-3️⃣ IC Backdraft (not a fire)
-4️⃣ :Storm_Fire: Phantasmania 
+1️⃣ P1
+2️⃣ P2
+3️⃣ P3 :Fire_Role: Mastery
+4️⃣ P4 :Storm_Fire: Damage
 
 :Storm_Role: __Strategy__ (-Orm with 209% or more dmg)
-5️⃣ 55% blade
-6️⃣ 55% Blade (Different) + WC Hex
-7️⃣ Balance Feint + WC Curse
-8️⃣ :Storm_Role: Bunyip
+5️⃣ P1
+6️⃣ P2
+7️⃣ P3
+8️⃣ P4 :Storm_Role: 209 DMG
 
 [High Loremagus Guide](https://docs.google.com/presentation/d/1YHmtOje__0ZKCBYUGdKfEY-i0uWOgpmfhQ-VB-Puo-0/edit?pli=1&slide=id.g3b8c12846ee_0_161#slide=id.g3b8c12846ee_0_161)
 

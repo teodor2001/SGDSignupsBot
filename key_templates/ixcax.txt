@@ -10,16 +10,16 @@
 {guild_role}
 
 :Myth_Role: __Strategy__
-1️⃣ Potent Feint BOSS
-2️⃣ Mass Feint
-3️⃣ 55% blade (Gumshoe / Sharpen Weaved)
-4️⃣ :Myth_Role: Drop Bear Fury
+1️⃣ P1
+2️⃣ P2
+3️⃣ P3
+4️⃣ P4 :Myth_Role
 
 :Fire_Role: __Strategy__
-5️⃣ Mass Feint
-6️⃣ IC Backdraft
-7️⃣ :Fire_Role: Scald
-8️⃣ 🚨 Incindiate (Deca-Deck Tier 5+ requiered!!)
+5️⃣ P1
+6️⃣ P2
+7️⃣ P3 :Fire_Role:
+8️⃣ P4 🚨(Deca-Deck Tier 5+ requiered!!)
 
 [Ixcax Guide](https://docs.google.com/presentation/d/1YHmtOje__0ZKCBYUGdKfEY-i0uWOgpmfhQ-VB-Puo-0/edit?pli=1&slide=id.g3b8c12846ee_1_81#slide=id.g3b8c12846ee_1_81)
 

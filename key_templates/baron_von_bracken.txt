@@ -10,18 +10,16 @@
 {guild_role}
 
 :Storm_Role: __Strategy__ (4 turns)
-1️⃣ (WC Hex) + 55% Blades
-2️⃣ (Hitter) IC Potent Feint
-3️⃣ Mass Feint
-4️⃣ :Storm_Role: Scion (Path A)
+1️⃣ P1 
+2️⃣ P2 (Hitter)
+3️⃣ P3
+4️⃣ P4 :Storm_Role:
 
 :Fire_Role: __Strategy__ (4 turns)
-5️⃣ (NOT :Fire_Role: :x: ) IC Potent Feint
-6️⃣ ( :Fire_Role: Mastery) Mars
-7️⃣ ( :Fire_Role: Mastery) IC Backdraft
-8️⃣ :Fire_Role: Scion (Path B)
-
-FOR THE FULL STRATEGY PLEASE REFER TO THE GUIDE
+5️⃣ P1 NOT :Fire_Role: :x:
+6️⃣ P2 :Fire_Role: Pips
+7️⃣ P3 :Fire_Role: Mastery
+8️⃣ P4 :Fire_Role:
 
 [Baron Von Bracken Guide](https://docs.google.com/presentation/d/1YHmtOje__0ZKCBYUGdKfEY-i0uWOgpmfhQ-VB-Puo-0/edit?pli=1&slide=id.g3bdf3964175_5_0#slide=id.g3bdf3964175_5_0)
 

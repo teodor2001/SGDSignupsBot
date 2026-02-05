@@ -10,18 +10,16 @@
 {guild_role}
 
 :Fire_Role: __Strategy__ (2 turns)
-1️⃣ Mass Feint - PASS
-2️⃣ IC Backdraft -PASS
-3️⃣ Potent Feint - PASS
-4️⃣ :Fire_Role: Nightbringer Detonate - Heckhound
+1️⃣ P1
+2️⃣ P2
+3️⃣ P3
+4️⃣ P4 :Fire_Role:
 
 :Fire_Role: __Strategy__ (3 turns)
-5️⃣ Donate Pip if DOT is 5+ pips / Mass - PASS - PASS
-6️⃣ Feint - PASS - PASS
-7️⃣ Potent Feint - PASS - PASS
-8️⃣ ( :Fire_Role: Mastery) Empower - Nightbringer Krampus B - DOT
-
-P.S. (For the list of possible DOT Hits, check the guide)
+5️⃣ P1
+6️⃣ P2
+7️⃣ P3
+8️⃣ P4 :Fire_Role: Mastery
 
 [Lady Stonegaze Guide](https://docs.google.com/presentation/d/1YHmtOje__0ZKCBYUGdKfEY-i0uWOgpmfhQ-VB-Puo-0/edit?pli=1&slide=id.g3bcc5e44cad_0_0#slide=id.g3bcc5e44cad_0_0)
 

@@ -9,11 +9,11 @@
 
 {guild_role}
 
-:Death_Storm: __Strategy__
-1️⃣ :Death_Storm: Threefold boss - Jolt boss
-2️⃣ 0 pip blade p4 - Pluto B boss 
-3️⃣ 45% blade p4 - Potent feint boss
-4️⃣ Frenzy - 7 pip aoe
+:Storm_Role: __Strategy__
+1️⃣ P1 :Storm_Role: Mastery
+2️⃣ P2 
+3️⃣ P3 :Balance_Role: Pips
+4️⃣ P4
 
 [Drowned Dan Guide](https://docs.google.com/presentation/d/1YHmtOje__0ZKCBYUGdKfEY-i0uWOgpmfhQ-VB-Puo-0/edit?pli=1&slide=id.g3b8c12846ee_1_5#slide=id.g3b8c12846ee_1_5)
 
