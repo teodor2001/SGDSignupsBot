@@ -351,7 +351,27 @@ async def create_raid_event(interaction: discord.Interaction, guild_key: str, te
 async def host(interaction: discord.Interaction, event_type: app_commands.Choice[str], guild: str, template_name: str, duration: str, time_string: str, hoster: discord.Member = None):
     
     e_type = event_type.value
-    duration_float = float(duration)
+
+    
+    if guild not in GUILD_CONFIG:
+        found_key = None
+        for key, info in GUILD_CONFIG.items():
+            if info['name'].lower() == guild.lower():
+                found_key = key
+                break
+        
+        if found_key:
+            guild = found_key
+        else:
+            await interaction.response.send_message(f"❌ Invalid guild name:`{guild}`", ephemeral=True)
+            return
+    clean_duration = duration.lower().replace("hours", "").replace("hour", "").replace("h", "").strip()
+
+    try:
+        duration_float = float(clean_duration)
+    except ValueError:
+        await interaction.response.send_message(f"❌ **Invalid Duration:** Could not understand `{duration}`. Please type a number like 1.5.", ephemeral=True)
+        return
 
     if e_type == "raid" and duration_float not in [1.5, 3.0]:
         await interaction.response.send_message("❌ **Invalid Duration:** Raids must be **1.5** or **3** hours.", ephemeral=True)
@@ -417,7 +437,7 @@ async def host(interaction: discord.Interaction, event_type: app_commands.Choice
     final_content = re.sub(r':(\w+):', replace_emoji_name, content_filled)
     
     reactions_to_add = []
-    ALL_POSSIBLE_REACTIONS = ['1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣', '7️⃣', '8️⃣', '9️⃣', '🔟',custom_emojis.eleven,custom_emojis.twelve,custom_emojis.thirteen,custom_emojis.fourteen,'✅','⭕']
+    ALL_POSSIBLE_REACTIONS = ['1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣', '7️⃣', '8️⃣', '9️⃣', '🔟',custom_emojis.eleven,custom_emojis.twelve,custom_emojis.thirteen,custom_emojis.fourteen,'✅','⭕','🛡️']
 
     for emoji_obj in ALL_POSSIBLE_REACTIONS:
         if str(emoji_obj) in final_content:
