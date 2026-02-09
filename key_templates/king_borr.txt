@@ -3,7 +3,6 @@
 
 ⏰ **Date and Time:** {time}
 ⌛ **Duration:** `{duration}`
-# :Grendel::Ratatoskr::HammerOfThor:
 
 ## __{guild_name}__ 🚨
 

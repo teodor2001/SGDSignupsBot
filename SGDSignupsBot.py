@@ -144,13 +144,11 @@ async def get_slide_image_file(presentation_id, page_id, filename):
 
 def update_template_cache(event: str):
     folder = f"{event}_templates"
-    #if time.time() - LAST_CACHE_UPDATE > 30:
     template_cache = []
     if os.path.exists(folder):
         for filename in os.listdir(folder):
             if filename.endswith(".txt"):
                 template_cache.append(filename[:-4])
-    #LAST_CACHE_UPDATE = time.time()
     return template_cache
 
 def get_calendar_service():
@@ -226,11 +224,8 @@ class SGDBot(commands.Bot):
 
     async def setup_hook(self):
         if SERVER_ID:
-            #await self.tree.copy_global_to(guild=SERVER_ID)
-            #await self.tree.sync()
             self.tree.clear_commands(guild=SERVER_ID)
             self.tree.copy_global_to(guild=SERVER_ID)
-            #await self.tree.sync()
             await self.tree.sync(guild=SERVER_ID)
             print("Commands synced for the specific server!")
         else:
@@ -411,7 +406,6 @@ async def host(interaction: discord.Interaction, event_type: app_commands.Choice
         dt = dt.astimezone()
         
     discord_time = f"<t:{int(dt.timestamp())}:f>"
-    #content_filled = raw_content.replace("{time}", discord_time).replace("{duration}", f"{duration} Hour" if duration_float == 1.0 else f"{duration} Hours").replace("{guild_name}", guild_info['name'])
     content_filled = raw_content.replace("{time}", discord_time).replace("{duration}", f"{duration} Hour" if duration_float == 1.0 else f"{duration} Hours").replace("{guild_name}", guild_info['name']).replace("{museum_contact}", f"<@{MUSEUM_CONTACT_ID}>")
     PINGS = [] 
     if "{guild_role}" in content_filled and "role_id" in guild_info:
@@ -419,11 +413,6 @@ async def host(interaction: discord.Interaction, event_type: app_commands.Choice
         mention = f"<@&{r_id}>"
         content_filled = content_filled.replace("{guild_role}", mention)
         PINGS.append(mention)
-
-    #if "{raider}" in content_filled:
-    #    mention = f"<@&{RAIDER_ROLE_ID}>"
-    #    content_filled = content_filled.replace("{raider}", mention)
-    #    PINGS.append(mention)
 
     def replace_emoji_name(match):
         name = match.group(1)

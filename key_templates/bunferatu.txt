@@ -3,7 +3,6 @@
 
 ⏰ **Date and Time:** {time}
 ⌛ **Duration:** `{duration}`
-# :HeadlessHorseman:
 
 ## __{guild_name}__ 🚨
 
